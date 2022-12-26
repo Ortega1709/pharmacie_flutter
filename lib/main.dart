@@ -1,6 +1,10 @@
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pharmacie/l10n/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pharmacie/screen/authentication_screen.dart';
 import 'package:pharmacie/style/color.dart';
 
 /// main function
@@ -30,14 +34,24 @@ class MyApp extends StatelessWidget {
       title: 'Pharmacie',
       debugShowCheckedModeBanner: false,
 
+      /// app localization
+      supportedLocales: L10n.all,
+
+      /// localization delegates
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+
       /// app theme
       theme: ThemeData(
-          scaffoldBackgroundColor: AppColors.white,
-          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: AppColors.background,
           useMaterial3: true),
 
       /// screen we will launch on start app
-      home: Placeholder(),
+      home: const AuthenticationScreen(),
     );
   }
 }
