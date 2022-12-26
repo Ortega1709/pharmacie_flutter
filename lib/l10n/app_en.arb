@@ -2,5 +2,6 @@
     "bienvenue": "Welcome !",
     "authentification":  "Authenticate to access the home interface",
     "email": "Email",
-    "mdp": "Password"
+    "mdp": "Password",
+    "erreur_au": "Authentification error"
 }

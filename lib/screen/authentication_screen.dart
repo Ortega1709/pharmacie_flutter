@@ -1,10 +1,14 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
+import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/style/color.dart';
 import 'package:pharmacie/style/text.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../component/form_field_component.dart';
+import '../repository/utilisateur_repository.dart';
+import 'main_screen.dart';
 
 /// authentication screen.
 class AuthenticationScreen extends StatefulWidget {
@@ -78,13 +82,16 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               isLoading = true;
                             });
 
-                            /*List<Document> documents =
+                            /// get all user to firebase
+                            List<Document> documents =
                             await UtilisateurRepository().get();
 
+                            ///
                             final data = documents
-                                .map((e) => Utilisateur.fromJson(e.map))
+                                .map((e) => UtilisateurModel.fromJson(e.map))
                                 .toList();
 
+                            /// loop runs until it finds a user
                             for (int i = 0; i < data.length; i++) {
                               if (data[i].email == emailController.text.trim() &&
                                   BCrypt.checkpw(passwordController.text.trim(),
@@ -92,9 +99,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 emailController.clear();
                                 passwordController.clear();
 
+                                /// if user exit, navigate to main screen
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        MainScreen(utilisateur: data[i])));
+                                        MainScreen(utilisateurModel: data[i])));
 
                                 setState(() {
                                   isLoading = false;
@@ -106,9 +114,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
                             setState(() {
                               isLoading = false;
-                            });*/
+                            });
 
-                            //banner("Erreur d'authentification");
+                            /// if user not exist, return message
+                            banner(AppLocalizations.of(context)!.erreur_au);
                           },
                           backgroundColor: AppColors.blue,
                           child: isLoading
@@ -126,6 +135,29 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   ],
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// message banner
+  banner(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        elevation: 5,
+        backgroundColor: AppColors.blue,
+        dismissDirection: DismissDirection.horizontal,
+        content: ListTile(
+          dense: true,
+          title: SecondaryText(text: text),
+          trailing: IconButton(
+            onPressed: () =>
+                ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
             ),
           ),
         ),
