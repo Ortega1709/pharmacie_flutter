@@ -3,5 +3,11 @@
     "authentification":  "Authenticate to access the home interface",
     "email": "Email",
     "mdp": "Password",
-    "erreur_au": "Authentification error"
+    "erreur_au": "Authentification error",
+    "dashboard": "Dashboard",
+    "ventes": "Sales",
+    "informations": "Information's",
+    "produits": "Products",
+    "utilisateurs": "Users",
+    "commandes": "Orders"
 }

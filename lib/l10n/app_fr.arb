@@ -3,5 +3,11 @@
     "authentification":  "Authentifiez-vous afin d'accéder à l'interface d'accueil",
     "email": "E-mail",
     "mdp": "Mot de passe",
-    "erreur_au": "Erreur d'authentification"
+    "erreur_au": "Erreur d'authentification",
+    "dashboard": "Tableau de bord",
+    "ventes": "Ventes",
+    "informations": "Informations",
+    "produits": "Produits",
+    "utilisateurs": "Utilisateurs",
+    "commandes": "Commandes"
 }
