@@ -4,8 +4,8 @@ import 'package:pharmacie/model/utilisateur_model.dart';
 
 /// user repository
 class UtilisateurRepository {
-  late CollectionReference utilisateurCollection =
-  Firestore.instance.collection("utilisateur");
+  final CollectionReference _utilisateurCollection = Firestore
+      .instance.collection("utilisateur");
 
   UtilisateurRepository();
 
@@ -15,10 +15,9 @@ class UtilisateurRepository {
         nom: utilisateurModel.nom,
         email: utilisateurModel.email,
         mdp: utilisateurModel.mdp,
-        type: utilisateurModel.type)
-        .toJson();
+        type: utilisateurModel.type).toJson();
 
-    utilisateurCollection.add(data);
+    _utilisateurCollection.add(data);
 
   }
 
@@ -32,14 +31,14 @@ class UtilisateurRepository {
         type: utilisateurModel.type)
         .toJson();
 
-    utilisateurCollection.document(id).update(data);
+    _utilisateurCollection.document(id).update(data);
 
   }
 
-  /// delete utilisateur with id
-  delete({required String id})  => utilisateurCollection.document(id).delete();
+  /// delete user with id
+  delete({required String id})  => _utilisateurCollection.document(id).delete();
 
-  /// get all utilisateurs
-  Future<List<Document>> get() async => await utilisateurCollection.get();
+  /// get all user
+  Future<List<Document>> get() async => await _utilisateurCollection.get();
 
 }

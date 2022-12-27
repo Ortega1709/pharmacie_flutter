@@ -50,13 +50,15 @@ class MyApp extends StatelessWidget {
       /// app theme
       theme: ThemeData(
           scaffoldBackgroundColor: AppColors.background,
+          primaryColor: AppColors.blue,
           useMaterial3: true),
 
       /// screen we will launch on start app
-      home: MainScreen(
-          utilisateurModel: UtilisateurModel(
-              nom: "Ortega",
-              email: "kabweortega@gmail.com", mdp: "", type: "admin")),
+      home: const AuthenticationScreen()
+
+      /*MainScreen(utilisateurModel: UtilisateurModel(
+          nom: "Ortega",
+          email: "kabweortega@gmail.com", mdp: "", type: "admin"))*/
 
     );
   }

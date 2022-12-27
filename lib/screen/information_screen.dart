@@ -18,7 +18,7 @@ class _InformationScreenState extends State<InformationScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
         title: PrimaryText(text: AppLocalizations.of(context)!.informations),
       ),
       floatingActionButton: FloatingActionButton(

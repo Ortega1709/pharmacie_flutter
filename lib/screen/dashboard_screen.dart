@@ -19,7 +19,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
         title: PrimaryText(text: AppLocalizations.of(context)!.dashboard),
       ),
       floatingActionButton: FloatingActionButton(

@@ -18,7 +18,7 @@ class _VenteScreenState extends State<VenteScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
         title: PrimaryText(text: AppLocalizations.of(context)!.ventes),
       ),
       floatingActionButton: FloatingActionButton(

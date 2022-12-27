@@ -97,10 +97,23 @@ class _MainScreenState extends State<MainScreen> {
                               ),
                             ),
 
-                            /// button two
+                            /// button three
                             MaterialButton(
                               onPressed: () async {
                                 pageController.jumpToPage(1);
+                              },
+                              child: ListTile(
+                                leading: const Icon(Icons.search,
+                                    color: AppColors.white),
+                                title: SecondaryText(text: AppLocalizations
+                                    .of(context)!.informations),
+                              ),
+                            ),
+
+                            /// button two
+                            MaterialButton(
+                              onPressed: () async {
+                                pageController.jumpToPage(2);
                               },
                               child: ListTile(
                                 leading: const Icon(Icons.point_of_sale,
@@ -108,19 +121,6 @@ class _MainScreenState extends State<MainScreen> {
                                 title: SecondaryText(
                                     text: AppLocalizations
                                         .of(context)!.ventes),
-                              ),
-                            ),
-
-                            /// button three
-                            MaterialButton(
-                              onPressed: () async {
-                                pageController.jumpToPage(2);
-                              },
-                              child: ListTile(
-                                leading: const Icon(Icons.search,
-                                    color: AppColors.white),
-                                title: SecondaryText(text: AppLocalizations
-                                    .of(context)!.informations),
                               ),
                             ),
 
@@ -188,8 +188,8 @@ class _MainScreenState extends State<MainScreen> {
 
                   children: const [
                     DashboardScreen(),
-                    VenteScreen(),
                     InformationScreen(),
+                    VenteScreen(),
                     ProduitScreen(),
                     UtilisateurScreen(),
                     CommandeScreen()
