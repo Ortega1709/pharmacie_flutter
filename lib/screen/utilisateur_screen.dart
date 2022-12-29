@@ -1,5 +1,9 @@
+import 'dart:core';
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:firedart/firedart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 
@@ -24,10 +28,16 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
   /// form key
   final _formKey = GlobalKey<FormState>();
 
+  /// main list product
+  late List<Document> mainProduct = [];
+
   /// text form controllers
   TextEditingController nomController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  /// initialize it with retrieved data
+  late List<Document> updateProduct = List.from(mainProduct);
 
   @override
   void dispose() {
@@ -39,7 +49,6 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
 
     super.dispose();
   }
-
 
 
   @override
@@ -418,8 +427,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
               },
               child: SecondaryText(
                 text: AppLocalizations.of(context)!.d_accord,
-                color: AppColors.blue),
-            )
+                color: AppColors.blue))
           ],
         );
       },
@@ -432,5 +440,6 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
     emailController.clear();
     passwordController.clear();
   }
+
 
 }

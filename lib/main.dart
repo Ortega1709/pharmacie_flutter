@@ -54,11 +54,9 @@ class MyApp extends StatelessWidget {
           useMaterial3: true),
 
       /// screen we will launch on start app
-      home: const AuthenticationScreen()
-
-      /*MainScreen(utilisateurModel: UtilisateurModel(
+      home: MainScreen(utilisateurModel: UtilisateurModel(
           nom: "Ortega",
-          email: "kabweortega@gmail.com", mdp: "", type: "admin"))*/
+          email: "kabweortega@gmail.com", mdp: "", type: "admin"))
 
     );
   }
