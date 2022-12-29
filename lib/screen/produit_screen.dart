@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pharmacie/component/row_produit_component.dart';
-import 'package:pharmacie/repository/produit_repository.dart';
-import 'package:intl/intl.dart';
+import 'package:pharmacie/component/row_produit_component.dart';import 'package:intl/intl.dart';
 
 import '../component/form_field_component.dart';
 import '../component/header_dialog_component.dart';
@@ -54,7 +52,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 32.0),
         child: FutureBuilder(
-          future: ProduitRepository().get(),
+          future: null,
           builder: (context, snapshot) {
 
             /// if connection is waiting show circular progress indicator
@@ -69,11 +67,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
                   child: PrimaryText(text: AppLocalizations.of(context)!.oops));
             }
 
-            /// if we get the data
-            final data =
-            snapshot.data?.map((e) => ProduitModel.fromJson(e.map)).toList();
-
-            return snapshot.data!.isEmpty
+            return true
                 ? Center(
                 child: PrimaryText(text: AppLocalizations.of(context)!.no_user))
                 : SingleChildScrollView(
@@ -83,19 +77,14 @@ class _ProduitScreenState extends State<ProduitScreen> {
                   const SizedBox(height: 16.0),
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: data!.length,
+                    itemCount: 1,
                     itemBuilder: (context, index) {
                       return RowProduit(
-                        produit: data[index],
+                        produit: ProduitModel(nom: "", pu: 4, qte: 4, dateExp: ""),
                         delete: () async {
-                          _deleteDialogue(
-                              context,
-                              snapshot.data![index].id,
-                              data[index].nom);
                         },
                         more: () async {
-                          _updateDialogue(context,
-                              snapshot.data![index].id, data[index]);
+
                         },
                       );
                     },
@@ -222,7 +211,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
                             qte: int.parse(qteController.text),
                             dateExp: dateExpController.text.toString());
 
-                        ProduitRepository().save(produitModel: data);
+                        //ProduitRepository().save(produitModel: data);
                         _clearInput();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.ajouter_produit);
@@ -360,7 +349,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
                             qte: int.parse(qteController.text),
                             dateExp: dateExpController.text.toString());
 
-                        ProduitRepository().update(id: id, produitModel: data);
+                        //ProduitRepository().update(id: id, produitModel: data);
                         _clearInput();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.modifier_produit);
@@ -401,7 +390,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
             ),
             TextButton(
                 onPressed: () async {
-                  ProduitRepository().delete(id: id);
+                  //ProduitRepository().delete(id: id);
                   Navigator.of(context).pop();
                   _infoDialogue(AppLocalizations.of(context)!.supprimer_produit);
                 },

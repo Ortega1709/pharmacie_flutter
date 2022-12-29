@@ -3,7 +3,6 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:firedart/firedart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 
@@ -11,7 +10,6 @@ import '../component/form_field_component.dart';
 import '../component/header_dialog_component.dart';
 import '../component/row_utilisateur_component.dart';
 import '../component/search_bar_component.dart';
-import '../repository/utilisateur_repository.dart';
 import '../style/color.dart';
 import '../style/text.dart';
 
@@ -29,7 +27,6 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
   final _formKey = GlobalKey<FormState>();
 
   /// main list product
-  late List<Document> mainProduct = [];
 
   /// text form controllers
   TextEditingController nomController = TextEditingController();
@@ -37,7 +34,6 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
   TextEditingController passwordController = TextEditingController();
 
   /// initialize it with retrieved data
-  late List<Document> updateProduct = List.from(mainProduct);
 
   @override
   void dispose() {
@@ -64,7 +60,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 32.0),
         child: FutureBuilder(
-          future: UtilisateurRepository().get(),
+          future: null,
           builder: (context, snapshot) {
 
             /// if connection is waiting show circular progress indicator
@@ -79,11 +75,9 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
                 child: PrimaryText(text: AppLocalizations.of(context)!.oops));
             }
 
-            /// if we get the data
-            final data =
-            snapshot.data?.map((e) => UtilisateurModel.fromJson(e.map)).toList();
 
-            return snapshot.data!.isEmpty
+
+            return true
                 ? Center(
               child: PrimaryText(text: AppLocalizations.of(context)!.no_user))
                 : SingleChildScrollView(
@@ -93,19 +87,14 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
                   const SizedBox(height: 16.0),
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: data!.length,
+                    itemCount: 1,
                     itemBuilder: (context, index) {
                       return RowUtilisateur(
-                        utilisateur: data[index],
+                        utilisateur: UtilisateurModel(nom: "", email: "", mdp: "", type: ""),
                         delete: () async {
-                          _deleteDialogue(
-                              context,
-                              snapshot.data![index].id,
-                              data[index].email);
                         },
                         more: () async {
-                          _updateDialogue(context,
-                              snapshot.data![index].id, data[index]);
+
                         },
                       );
                     },
@@ -242,7 +231,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
                             mdp: passwordController.text.trim(),
                             type: currentSelectedValue!);
 
-                        UtilisateurRepository().save(utilisateurModel: data);
+                        //UtilisateurRepository().save(utilisateurModel: data);
                         _clearInput();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.ajouter_utilisateur);
@@ -353,8 +342,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
                             mdp: passwordController.text.trim(),
                             type: currentSelectedValue!);
 
-                        UtilisateurRepository()
-                            .update(id: id, utilisateurModel: data);
+                        //UtilisateurRepository().update(id: id, utilisateurModel: data);
                         _clearInput();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.modifier_utilisateur);
@@ -394,7 +382,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
             ),
             TextButton(
               onPressed: () async {
-                UtilisateurRepository().delete(id: id);
+                //UtilisateurRepository().delete(id: id);
                 Navigator.of(context).pop();
                 _infoDialogue(AppLocalizations.of(context)!.supprimer_utilisateur);
               },

@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/style/color.dart';
 import 'package:pharmacie/style/text.dart';
-import 'package:firedart/firedart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../component/form_field_component.dart';
-import '../repository/utilisateur_repository.dart';
 import 'main_screen.dart';
 
 /// authentication screen.
@@ -82,35 +80,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               isLoading = true;
                             });
 
-                            /// get all user to firebase
-                            List<Document> documents =
-                            await UtilisateurRepository().get();
-
-                            ///
-                            final data = documents
-                                .map((e) => UtilisateurModel.fromJson(e.map))
-                                .toList();
-
-                            /// loop runs until it finds a user
-                            for (int i = 0; i < data.length; i++) {
-                              if (data[i].email == emailController.text.trim() &&
-                                  BCrypt.checkpw(passwordController.text.trim(),
-                                      data[i].mdp)) {
-                                emailController.clear();
-                                passwordController.clear();
-
-                                /// if user exit, navigate to main screen
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        MainScreen(utilisateurModel: data[i])));
-
-                                setState(() {
-                                  isLoading = false;
-                                });
-
-                                return;
-                              }
-                            }
+                            Future.delayed(const Duration(minutes: 5));
 
                             setState(() {
                               isLoading = false;

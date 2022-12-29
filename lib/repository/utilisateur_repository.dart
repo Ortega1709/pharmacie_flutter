@@ -1,44 +1,47 @@
-import 'package:firedart/firestore/firestore.dart';
-import 'package:firedart/firestore/models.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
+import 'package:pharmacie/repository/database.dart';
 
-/// user repository
+
+
+/// utilisateur repository
 class UtilisateurRepository {
-  final CollectionReference _utilisateurCollection = Firestore
-      .instance.collection("utilisateur");
 
-  UtilisateurRepository();
+  /// instance of database class
+  final Database _database = Database();
+  final String _table = "utilisateur";
 
   /// save user
   save({required UtilisateurModel utilisateurModel}) {
-    final data = UtilisateurModel(
-        nom: utilisateurModel.nom,
-        email: utilisateurModel.email,
-        mdp: utilisateurModel.mdp,
-        type: utilisateurModel.type).toJson();
 
-    _utilisateurCollection.add(data);
+
 
   }
 
-  /// update user with id
-  update({required String id, required UtilisateurModel utilisateurModel}) {
+  /// get all user in database
+  get() async {
 
-    final data = UtilisateurModel(
-        nom: utilisateurModel.nom,
-        email: utilisateurModel.email,
-        mdp: utilisateurModel.mdp,
-        type: utilisateurModel.type)
-        .toJson();
 
-    _utilisateurCollection.document(id).update(data);
+    String sql = "SELECT * FROM $_table";
+
+    await _database.getConnection().then((connection) async {
+      await connection.query(sql).then((results) {
+        for (var result in results) {
+          print(result);
+        }
+      }).onError((error, stackTrace) {
+        print(error);
+        return null;
+      });
+
+      connection.close();
+
+    });
 
   }
+}
 
-  /// delete user with id
-  delete({required String id})  => _utilisateurCollection.document(id).delete();
+void main() {
 
-  /// get all user
-  Future<List<Document>> get() async => await _utilisateurCollection.get();
+  UtilisateurRepository().get();
 
 }

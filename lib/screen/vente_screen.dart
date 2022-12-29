@@ -1,10 +1,7 @@
-import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pharmacie/model/detail_vente_model.dart';
 import 'package:pharmacie/model/vente_model.dart';
-import 'package:pharmacie/repository/vente_repository.dart';
-
 import '../model/produit_model.dart';
 import '../style/color.dart';
 import '../style/text.dart';

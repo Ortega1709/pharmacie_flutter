@@ -1,4 +1,3 @@
-import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,11 +11,8 @@ import 'package:pharmacie/style/color.dart';
 /// main function
 void main() async {
 
-  /// initialize fire store project
-  /// fire store for save our data
-  Firestore.initialize("pharmadb-50464");
   WidgetsFlutterBinding.ensureInitialized();
-
+  
   /// screen orientations ...
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
