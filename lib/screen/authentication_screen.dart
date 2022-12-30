@@ -1,6 +1,7 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
+import 'package:pharmacie/repository/utilisateur_repository.dart';
 import 'package:pharmacie/style/color.dart';
 import 'package:pharmacie/style/text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -80,14 +81,30 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               isLoading = true;
                             });
 
-                            Future.delayed(const Duration(minutes: 5));
 
-                            setState(() {
-                              isLoading = false;
-                            });
+                            UtilisateurModel? utilisateur = await UtilisateurRepository()
+                                .authentication(email: emailController.text, mdp: passwordController.text);
 
-                            /// if user not exist, return message
-                            banner(AppLocalizations.of(context)!.erreur_au);
+                            if (utilisateur != null) {
+
+                              Navigator
+                                  .of(context)
+                                  .push(MaterialPageRoute(builder: (context) => MainScreen(utilisateurModel: utilisateur)));
+
+                            } else {
+
+                              setState(() {
+                                isLoading = false;
+                              });
+
+                              /// if user not exist, return message
+                              banner(AppLocalizations.of(context)!.erreur_au);
+
+                            }
+
+
+
+
                           },
                           backgroundColor: AppColors.blue,
                           child: isLoading

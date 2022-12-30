@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
+import 'package:pharmacie/repository/utilisateur_repository.dart';
 
 import '../component/form_field_component.dart';
 import '../component/header_dialog_component.dart';
@@ -60,7 +61,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 32.0),
         child: FutureBuilder(
-          future: null,
+          future: UtilisateurRepository().get(),
           builder: (context, snapshot) {
 
             /// if connection is waiting show circular progress indicator
@@ -77,7 +78,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
 
 
 
-            return true
+            return snapshot.data!.isEmpty
                 ? Center(
               child: PrimaryText(text: AppLocalizations.of(context)!.no_user))
                 : SingleChildScrollView(
@@ -87,14 +88,15 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
                   const SizedBox(height: 16.0),
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: 1,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       return RowUtilisateur(
-                        utilisateur: UtilisateurModel(nom: "", email: "", mdp: "", type: ""),
+                        utilisateur: snapshot.data![index],
                         delete: () async {
+                          _deleteDialogue(context, snapshot.data![index].id, snapshot.data![index].email);
                         },
                         more: () async {
-
+                          _updateDialogue(context, snapshot.data![index].id, snapshot.data![index]);
                         },
                       );
                     },
@@ -226,12 +228,13 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
                     FloatingActionButton.extended(
                       onPressed: () async {
                         UtilisateurModel data = UtilisateurModel(
+                            id: 0,
                             nom: nomController.text.trim(),
                             email: emailController.text.toLowerCase().trim(),
                             mdp: passwordController.text.trim(),
                             type: currentSelectedValue!);
 
-                        //UtilisateurRepository().save(utilisateurModel: data);
+                        UtilisateurRepository().save(utilisateurModel: data);
                         _clearInput();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.ajouter_utilisateur);
@@ -251,7 +254,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
   }
 
   /// methode
-  _updateDialogue(BuildContext context, String id, UtilisateurModel utilisateur) {
+  _updateDialogue(BuildContext context, int id, UtilisateurModel utilisateur) {
 
     /// initialize our controllers with retrieved data
     nomController.text = utilisateur.nom;
@@ -337,12 +340,13 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
                     FloatingActionButton.extended(
                       onPressed: () async {
                         UtilisateurModel data = UtilisateurModel(
+                            id: id,
                             nom: nomController.text.trim(),
                             email: emailController.text.toLowerCase().trim(),
                             mdp: passwordController.text.trim(),
                             type: currentSelectedValue!);
 
-                        //UtilisateurRepository().update(id: id, utilisateurModel: data);
+                        UtilisateurRepository().update(utilisateurModel: data);
                         _clearInput();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.modifier_utilisateur);
@@ -361,7 +365,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
   }
 
   /// methode
-  _deleteDialogue(BuildContext context, String id, String email) {
+  _deleteDialogue(BuildContext context, int id, String email) {
 
     return showDialog(
       context: context,
@@ -382,7 +386,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
             ),
             TextButton(
               onPressed: () async {
-                //UtilisateurRepository().delete(id: id);
+                UtilisateurRepository().delete(id: id);
                 Navigator.of(context).pop();
                 _infoDialogue(AppLocalizations.of(context)!.supprimer_utilisateur);
               },

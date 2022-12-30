@@ -69,7 +69,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
 
             return true
                 ? Center(
-                child: PrimaryText(text: AppLocalizations.of(context)!.no_user))
+                child: PrimaryText(text: AppLocalizations.of(context)!.no_produit))
                 : SingleChildScrollView(
               child: Column(
                 children: [

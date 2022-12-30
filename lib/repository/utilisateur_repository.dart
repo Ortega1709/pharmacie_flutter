@@ -1,47 +1,115 @@
+import 'dart:async';
+
+import 'package:bcrypt/bcrypt.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:mysql1/mysql1.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/repository/database.dart';
 
-
-
-/// utilisateur repository
 class UtilisateurRepository {
 
-  /// instance of database class
   final Database _database = Database();
   final String _table = "utilisateur";
 
-  /// save user
-  save({required UtilisateurModel utilisateurModel}) {
 
+  save({required UtilisateurModel utilisateurModel}) async {
 
+    String sql =
+        "INSERT INTO $_table (nom, email, mdp, type) VALUES (?, ?, ?, ?)";
+
+    MySqlConnection connection = await _database.getConnection();
+
+    await connection.query(sql, [
+      utilisateurModel.nom,
+      utilisateurModel.email,
+      BCrypt.hashpw(utilisateurModel.mdp, BCrypt.gensalt()),
+      utilisateurModel.type
+    ]);
 
   }
 
-  /// get all user in database
-  get() async {
+
+  update({required UtilisateurModel utilisateurModel}) async {
+
+    String sql =
+        "UPDATE $_table SET nom=? ,email=? ,mdp=? ,type=? WHERE id=?";
+
+    MySqlConnection connection = await _database.getConnection();
+
+    await connection.query(sql, [
+      utilisateurModel.nom,
+      utilisateurModel.email,
+      BCrypt.hashpw(utilisateurModel.mdp, BCrypt.gensalt()),
+      utilisateurModel.type,
+      utilisateurModel.id
+    ]);
+
+  }
 
 
-    String sql = "SELECT * FROM $_table";
+  delete({required int id}) async {
 
-    await _database.getConnection().then((connection) async {
-      await connection.query(sql).then((results) {
-        for (var result in results) {
-          print(result);
-        }
-      }).onError((error, stackTrace) {
-        print(error);
-        return null;
-      });
+    String sql = "DELETE FROM $_table WHERE id=?";
 
-      connection.close();
+    MySqlConnection connection = await _database.getConnection();
+    await connection.query(sql, [id]);
 
-    });
+  }
+
+  Future<List<UtilisateurModel>> get() async {
+
+    List<UtilisateurModel> users = [];
+    String sql = "SELECT * FROM $_table ORDER BY $_table.id DESC";
+
+    MySqlConnection connection = await _database.getConnection();
+    Results response = await connection.query(sql);
+
+    for (var res in response) {
+
+      users.add(UtilisateurModel(
+          id: res["id"],
+          nom: res["nom"],
+          email: res["email"],
+          mdp: res["mdp"],
+          type: res["type"]
+      ));
+
+    }
+    return users;
+
+  }
+
+  Future<UtilisateurModel?> authentication({required String email, required String mdp}) async {
+
+    String sql = "SELECT * FROM $_table WHERE email = ?";
+
+    MySqlConnection connection = await _database.getConnection();
+    Results response = await connection.query(sql, [email]);
+
+    for (var res in response) {
+
+      if (BCrypt.checkpw(mdp, res["mdp"]) == true) {
+
+        return UtilisateurModel(
+            id: res["id"],
+            nom: res["nom"],
+            email: res["email"],
+            mdp: res["mdp"],
+            type: res["type"]);
+
+      }
+
+    }
+
+    return null;
 
   }
 }
 
-void main() {
+void main() async {
 
-  UtilisateurRepository().get();
+
 
 }
+
+
