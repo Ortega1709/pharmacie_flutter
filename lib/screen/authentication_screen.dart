@@ -7,7 +7,7 @@ import 'package:pharmacie/style/text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../component/form_field_component.dart';
-import 'main_screen.dart';
+import 'main_screen_admin.dart';
 
 /// authentication screen.
 class AuthenticationScreen extends StatefulWidget {
@@ -89,7 +89,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
                               Navigator
                                   .of(context)
-                                  .push(MaterialPageRoute(builder: (context) => MainScreen(utilisateurModel: utilisateur)));
+                                  .push(MaterialPageRoute(builder: (context) => MainScreenAdmin(utilisateurModel: utilisateur)));
 
                             } else {
 

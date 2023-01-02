@@ -13,7 +13,6 @@ import '../style/text.dart';
 class VenteScreen extends StatefulWidget {
 
   final UtilisateurModel utilisateurModel;
-
   const VenteScreen({Key? key, required this.utilisateurModel}) : super(key: key);
 
   @override

@@ -15,18 +15,18 @@ import '../style/color.dart';
 import '../style/text.dart';
 
 /// main screen
-class MainScreen extends StatefulWidget {
+class MainScreenAdmin extends StatefulWidget {
   /// current user logged
   final UtilisateurModel utilisateurModel;
 
-  const MainScreen({Key? key, required this.utilisateurModel})
+  const MainScreenAdmin({Key? key, required this.utilisateurModel})
       : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<MainScreenAdmin> createState() => _MainScreenAdminState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenAdminState extends State<MainScreenAdmin> {
   /// current index of view pager
   int currentIndex = 0;
 
