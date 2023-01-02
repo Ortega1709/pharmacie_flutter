@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pharmacie/component/row_vente_component.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/repository/vente_repository.dart';
-import '../component/row_utilisateur_component.dart';
 import '../component/search_bar_component.dart';
 import '../style/color.dart';
 import '../style/text.dart';
