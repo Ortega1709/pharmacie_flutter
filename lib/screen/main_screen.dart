@@ -89,13 +89,13 @@ class _MainScreenState extends State<MainScreen> {
                     currentIndex = index;
                   });
                 },
-                children: const [
-                  DashboardScreen(),
-                  InformationScreen(),
-                  VenteScreen(),
-                  ProduitScreen(),
-                  UtilisateurScreen(),
-                  CommandeScreen()
+                children:  [
+                  DashboardScreen(utilisateurModel: widget.utilisateurModel),
+                  InformationScreen(utilisateurModel: widget.utilisateurModel),
+                  VenteScreen(utilisateurModel: widget.utilisateurModel),
+                  ProduitScreen(utilisateurModel: widget.utilisateurModel),
+                  UtilisateurScreen(utilisateurModel: widget.utilisateurModel),
+                  CommandeScreen(utilisateurModel: widget.utilisateurModel)
                 ],
               ),
             ),

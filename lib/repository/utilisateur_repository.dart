@@ -101,6 +101,23 @@ class UtilisateurRepository {
     return null;
 
   }
+
+  // count product
+  Future<num> countUser() async {
+
+    String sql = "SELECT COUNT(id) as users FROM $_table";
+
+    MySqlConnection connection = await _database.getConnection();
+    Results response = await connection.query(sql);
+
+    num number = 0;
+    for(var res in response) {
+      number = res["users"];
+    }
+
+    return number;
+
+  }
 }
 
 

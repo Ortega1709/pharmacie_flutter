@@ -78,4 +78,21 @@ class ProduitRepository {
     return produitModel;
 
   }
+
+  // count product
+  Future<num> countProduct() async {
+
+    String sql = "SELECT COUNT(id) as products FROM $_table";
+
+    MySqlConnection connection = await _database.getConnection();
+    Results response = await connection.query(sql);
+
+    num number = 0;
+    for(var res in response) {
+      number = res["products"];
+    }
+
+    return number;
+
+  }
 }

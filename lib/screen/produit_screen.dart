@@ -4,19 +4,26 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmacie/component/row_produit_component.dart';import 'package:intl/intl.dart';
+import 'package:pharmacie/model/detail_vente_model.dart';
+import 'package:pharmacie/model/vente_model.dart';
 import 'package:pharmacie/repository/produit_repository.dart';
+import 'package:pharmacie/repository/vente_repository.dart';
 
 import '../component/form_field_component.dart';
 import '../component/form_field_number_component.dart';
 import '../component/header_dialog_component.dart';
 import '../component/search_bar_component.dart';
 import '../model/produit_model.dart';
+import '../model/utilisateur_model.dart';
 import '../style/color.dart';
 import '../style/text.dart';
 
 /// produit screen
 class ProduitScreen extends StatefulWidget {
-  const ProduitScreen({Key? key}) : super(key: key);
+
+  final UtilisateurModel utilisateurModel;
+
+  const ProduitScreen({Key? key, required this.utilisateurModel}) : super(key: key);
 
   @override
   State<ProduitScreen> createState() => _ProduitScreenState();
@@ -103,7 +110,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
                             more: () async {
                               _updateDialogue(context, snapshot.data![index].id, snapshot.data![index]);
                             },
-                            vente: () async {
+                            vente: snapshot.data![index].qte == 0 ? null : () async {
                               _vendreDialog(snapshot.data![index]);
                             },
                           );
@@ -459,7 +466,28 @@ class _ProduitScreenState extends State<ProduitScreen> {
                     const SizedBox(height: 16.0),
                     FloatingActionButton.extended(
                       onPressed: () async {
-                        print(montantController.text);
+
+                        // rest of the initial quantity - the quantity inserted
+                        int reste = produitModel.qte - int.parse(numberController.text);
+                        
+                        // create model of detail vante
+                        DetailVenteModel detailVenteModel = DetailVenteModel(
+                            idProduit: produitModel.id, 
+                            idVente: 0, 
+                            qte: int.parse(numberController.text));
+
+                        // create model of vente
+                        VenteModel venteModel = VenteModel(
+                            id: 0, 
+                            idUtilisateur: widget.utilisateurModel.id, 
+                            total: int.parse(montantController.text),
+                            date: DateFormat("dd-MM-yyyy").format(DateTime.now()),
+                            detailVenteModel: detailVenteModel);
+
+                        VenteRepository().create(venteModel: venteModel, rest: reste);
+                        Navigator.of(context).pop();
+                        _infoDialogue(AppLocalizations.of(context)!.vendre_produit);
+
                       },
                       backgroundColor: AppColors.blue,
                       label: SecondaryText(text: AppLocalizations.of(context)!.vendre),

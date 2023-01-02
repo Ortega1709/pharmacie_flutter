@@ -27,6 +27,7 @@
     "ajouter_produit": "Vous avez ajouté un produit",
     "supprimer_produit": "Vous avez supprimé un produit",
     "modifier_produit": "Vous avez modifié un produit",
+    "vendre_produit": "Vous avez vendu un produit",
     "confirmation_p": "Voulez-vous supprimer ce produit?",
     "enregistrer": "Enregistrer",
     "modifier_utilisateur": "Vous avez modifié un utilisateur",

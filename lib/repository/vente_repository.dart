@@ -69,4 +69,39 @@ class VenteRepository {
 
   }
 
+  // amount of money
+  Future<num> amount() async {
+
+    String sql = "SELECT total FROM $_table_1";
+
+    MySqlConnection connection = await _database.getConnection();
+    Results response = await connection.query(sql);
+
+    num amount = 0;
+    for (var res in response) {
+      amount = amount + res["total"];
+    }
+
+    return amount;
+
+
+  }
+
+  // number of sales
+  Future<num> countSales() async {
+
+    String sql = "SELECT COUNT(id) as sales FROM $_table_1";
+
+    MySqlConnection connection = await _database.getConnection();
+    Results response = await connection.query(sql);
+
+    num number = 0;
+    for(var res in response) {
+      number = res["sales"];
+    }
+
+    return number;
+
+  }
+
 }

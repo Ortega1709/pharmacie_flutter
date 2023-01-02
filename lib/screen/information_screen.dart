@@ -2,13 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pharmacie/model/utilisateur_model.dart';
 
 import '../style/color.dart';
 import '../style/text.dart';
 
 /// information screen
 class InformationScreen extends StatefulWidget {
-  const InformationScreen({Key? key}) : super(key: key);
+
+  final UtilisateurModel utilisateurModel;
+
+  const InformationScreen({Key? key, required this.utilisateurModel}) : super(key: key);
 
   @override
   State<InformationScreen> createState() => _InformationScreenState();

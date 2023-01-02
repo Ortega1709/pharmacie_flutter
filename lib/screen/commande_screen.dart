@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/style/color.dart';
 
 import '../style/text.dart';
 
 /// commande screen
 class CommandeScreen extends StatefulWidget {
-  const CommandeScreen({Key? key}) : super(key: key);
+
+  final UtilisateurModel utilisateurModel;
+
+  const CommandeScreen({Key? key, required this.utilisateurModel}) : super(key: key);
 
   @override
   State<CommandeScreen> createState() => _CommandeScreenState();

@@ -18,7 +18,10 @@ import '../style/text.dart';
 
 /// utilisateur screen
 class UtilisateurScreen extends StatefulWidget {
-  const UtilisateurScreen({Key? key}) : super(key: key);
+
+  final UtilisateurModel utilisateurModel;
+
+  const UtilisateurScreen({Key? key, required this.utilisateurModel}) : super(key: key);
 
   @override
   State<UtilisateurScreen> createState() => _UtilisateurScreenState();

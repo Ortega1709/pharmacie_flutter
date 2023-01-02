@@ -30,6 +30,7 @@
     "supprimer_produit": "You have deleted a product",
     "modifier_produit": "Vous have modified a product",
     "confirmation_p": "Do you want delete this product ?",
+    "vendre_produit": "You sold a product",
     "supprimer": "Delete",
     "annuler": "Canceled",
     "supprimer_utilisateur": "You have deleted a user",

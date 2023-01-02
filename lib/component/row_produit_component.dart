@@ -12,7 +12,7 @@ class RowProduit extends StatelessWidget {
   final ProduitModel produit;
   final void Function() delete;
   final void Function() more;
-  final void Function() vente;
+  final void Function()? vente;
 
   const RowProduit({Key? key, required this.produit, required this.delete, required this.more, required this.vente}) : super(key: key);
 

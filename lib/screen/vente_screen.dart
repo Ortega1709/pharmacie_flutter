@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pharmacie/component/row_vente_component.dart';
+import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/repository/vente_repository.dart';
 import '../component/row_utilisateur_component.dart';
 import '../component/search_bar_component.dart';
@@ -11,7 +12,10 @@ import '../style/text.dart';
 
 /// vente screen
 class VenteScreen extends StatefulWidget {
-  const VenteScreen({Key? key}) : super(key: key);
+
+  final UtilisateurModel utilisateurModel;
+
+  const VenteScreen({Key? key, required this.utilisateurModel}) : super(key: key);
 
   @override
   State<VenteScreen> createState() => _VenteScreenState();
@@ -51,11 +55,9 @@ class _VenteScreenState extends State<VenteScreen> {
                   child: PrimaryText(text: AppLocalizations.of(context)!.oops));
             }
 
-
-
             return snapshot.data!.isEmpty
                 ? Center(
-                child: PrimaryText(text: AppLocalizations.of(context)!.no_user))
+                child: PrimaryText(text: AppLocalizations.of(context)!.no_vente))
                 : Column(
               children: [
                 Expanded(
