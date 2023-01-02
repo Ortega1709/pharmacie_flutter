@@ -13,7 +13,7 @@ class Database {
 
   Future<MySqlConnection> getConnection() async {
 
-    /// settings for connection to database mysql
+    // settings for connection to database mysql
     var settings = ConnectionSettings(
       host: host,
       user: user,
@@ -22,7 +22,7 @@ class Database {
       port: port
     );
 
-    /// return connection to database
+    // return connection to database
     return await MySqlConnection.connect(settings);
   }
 }

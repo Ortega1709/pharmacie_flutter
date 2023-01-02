@@ -18,7 +18,7 @@ class UtilisateurModel {
 
 
   /// data fromJson
-  factory UtilisateurModel.fromJson(Map<dynamic, dynamic> json) => UtilisateurModel(
+  factory UtilisateurModel.fromJson(Map<String, dynamic> json) => UtilisateurModel(
       id: json["id"],
       nom: json["nom"],
       email: json["email"],

@@ -1,31 +1,31 @@
-
-import 'package:intl/intl.dart';
+import 'detail_vente_model.dart';
 
 /// vente model
 class VenteModel {
 
-  /// attributes
-  final String idUtilisateur;
+  // attributes
+  final int id;
+  final int idUtilisateur;
   final int total;
   final dynamic date;
+  final DetailVenteModel? detailVenteModel;
 
   VenteModel({
+    required this.id,
     required this.idUtilisateur,
     required this.total,
-    required this.date
+    required this.date,
+    required this.detailVenteModel
   });
 
-  /// data toJson
-  Map<String, dynamic> toJson() => {
-    "id_utilisateur": idUtilisateur,
-    "total": total,
-    "date": date
-  };
-
-  /// data fromJson
+  // data fromJson
   factory VenteModel.fromJson(Map<String, dynamic> json) => VenteModel(
+      id: json["id"],
       idUtilisateur: json["id_utilisateur"],
       total: json["total"],
-      date: json["date"].toString());
+      date: json["date"],
+      detailVenteModel: DetailVenteModel.fromJson(json["detail"]));
+
+
 
 }

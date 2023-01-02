@@ -13,7 +13,7 @@ class ProduitRepository {
 
   ProduitRepository();
 
-  /// save product
+  // save product
   save({required ProduitModel produitModel}) async {
 
     String sql =
@@ -30,7 +30,7 @@ class ProduitRepository {
 
   }
 
-  /// update product
+  // update product
   update({required ProduitModel produitModel}) async {
 
     String sql =
@@ -48,7 +48,7 @@ class ProduitRepository {
 
   }
 
-  /// delete product
+  // delete product
   delete({required int id}) async {
 
     String sql = "DELETE FROM $_table WHERE id=?";
@@ -58,7 +58,7 @@ class ProduitRepository {
 
   }
 
-  /// get all product
+  // get all product
   Future<List<ProduitModel>> get() async {
 
     List<ProduitModel> produitModel = [];
@@ -70,13 +70,7 @@ class ProduitRepository {
     for (var res in response) {
 
       produitModel.add(
-        ProduitModel(
-          id: res["id"],
-          nom: res["nom"],
-          pu: res["prix_unitaire"],
-          qte: res["qte"],
-          dateExp: res["date_exp"]
-        )
+        ProduitModel.fromJson(res.fields)
       );
 
     }
@@ -84,11 +78,4 @@ class ProduitRepository {
     return produitModel;
 
   }
-}
-
-void main() async {
-
-  List<ProduitModel> produitModel = await ProduitRepository().get();
-  print(produitModel[0]);
-
 }

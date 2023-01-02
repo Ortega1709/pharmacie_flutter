@@ -35,7 +35,7 @@ class PrimaryText extends StatelessWidget {
 /// secondary text style
 class SecondaryText extends StatelessWidget {
 
-  final String text;
+  final String? text;
   final Color color;
   final FontWeight fontWeight;
   final double fontSize;
@@ -50,7 +50,7 @@ class SecondaryText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      text,
+      text!,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: GoogleFonts.inter(

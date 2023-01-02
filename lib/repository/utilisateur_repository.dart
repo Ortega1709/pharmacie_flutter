@@ -14,7 +14,7 @@ class UtilisateurRepository {
 
   UtilisateurRepository();
 
-  /// save user
+  // save user
   save({required UtilisateurModel utilisateurModel}) async {
 
     String sql =
@@ -31,7 +31,7 @@ class UtilisateurRepository {
 
   }
 
-  /// update user
+  // update user
   update({required UtilisateurModel utilisateurModel}) async {
 
     String sql =
@@ -49,7 +49,7 @@ class UtilisateurRepository {
 
   }
 
-  /// delete user
+  // delete user
   delete({required int id}) async {
 
     String sql = "DELETE FROM $_table WHERE id=?";
@@ -60,7 +60,7 @@ class UtilisateurRepository {
   }
 
 
-  /// get all user
+  // get all user
   Future<List<UtilisateurModel>> get() async {
 
     List<UtilisateurModel> users = [];
@@ -71,20 +71,16 @@ class UtilisateurRepository {
 
     for (var res in response) {
 
-      users.add(UtilisateurModel(
-          id: res["id"],
-          nom: res["nom"],
-          email: res["email"],
-          mdp: res["mdp"],
-          type: res["type"]
-      ));
+      users.add(
+        UtilisateurModel.fromJson(res.fields)
+      );
 
     }
     return users;
 
   }
 
-
+  // authentication
   Future<UtilisateurModel?> authentication({required String email, required String mdp}) async {
 
     String sql = "SELECT * FROM $_table WHERE email = ?";
@@ -96,12 +92,7 @@ class UtilisateurRepository {
 
       if (BCrypt.checkpw(mdp, res["mdp"]) == true) {
 
-        return UtilisateurModel(
-            id: res["id"],
-            nom: res["nom"],
-            email: res["email"],
-            mdp: res["mdp"],
-            type: res["type"]);
+        return UtilisateurModel.fromJson(res.fields);
 
       }
 
