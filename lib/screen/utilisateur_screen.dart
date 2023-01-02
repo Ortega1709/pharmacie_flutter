@@ -1,8 +1,10 @@
 import 'dart:core';
 import 'dart:core';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/repository/utilisateur_repository.dart';
@@ -81,29 +83,34 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
             return snapshot.data!.isEmpty
                 ? Center(
               child: PrimaryText(text: AppLocalizations.of(context)!.no_user))
-                : SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SearchBar(hintText: "ex: ortega"),
-                  const SizedBox(height: 16.0),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return RowUtilisateur(
-                        utilisateur: snapshot.data![index],
-                        delete: () async {
-                          _deleteDialogue(context, snapshot.data![index].id, snapshot.data![index].email);
-                        },
-                        more: () async {
-                          _updateDialogue(context, snapshot.data![index].id, snapshot.data![index]);
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
+                : Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: const [
+                          SearchBar(hintText: "ex: ortega"),
+                          SizedBox(height: 16.0)])),
+
+                    Expanded(
+                        flex: 8,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return RowUtilisateur(
+                              utilisateur: snapshot.data![index],
+                              delete: () async {
+                                _deleteDialogue(context, snapshot.data![index].id, snapshot.data![index].email);
+                              },
+                              more: () async {
+                                _updateDialogue(context, snapshot.data![index].id, snapshot.data![index]);
+                              },
+                            );
+                          },
+                        ),)
+                  ],
+                );
           },
         ),
       ),
@@ -116,9 +123,7 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
             onPressed: () async {
               _refresh();
             },
-            child: const Icon(
-              Icons.refresh,
-              color: AppColors.white)),
+            child: const Icon(FontAwesomeIcons.refresh, color: AppColors.white, size: 18)),
 
           const SizedBox(width: 5),
           FloatingActionButton.extended(
@@ -137,7 +142,11 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
       ),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
+
+
   }
+
+
 
   /// refresh state
   _refresh() {

@@ -1,0 +1,6 @@
+/// vente repository
+class VenteRepository {
+
+
+
+}

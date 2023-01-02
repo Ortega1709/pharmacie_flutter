@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../model/utilisateur_model.dart';
@@ -74,9 +75,9 @@ class RowUtilisateur extends StatelessWidget {
                         child: IconButton(
                           onPressed: delete,
                           icon: const Icon(
-                            Icons.delete,
-                            size: 18,
-                            color: AppColors.blue),
+                              CupertinoIcons.delete,
+                              size: 18,
+                              color: AppColors.blue),
                         ),
                     ),
                   ),

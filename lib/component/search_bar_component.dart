@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../style/color.dart';
@@ -19,7 +20,7 @@ class SearchBar extends StatelessWidget {
         filled: true,
         fillColor: AppColors.white,
         prefixIcon: const Icon(
-            Icons.search,
+            CupertinoIcons.search,
             color: AppColors.blue),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),

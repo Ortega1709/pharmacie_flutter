@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../model/produit_model.dart';
@@ -11,8 +12,9 @@ class RowProduit extends StatelessWidget {
   final ProduitModel produit;
   final void Function() delete;
   final void Function() more;
+  final void Function() vente;
 
-  const RowProduit({Key? key, required this.produit, required this.delete, required this.more}) : super(key: key);
+  const RowProduit({Key? key, required this.produit, required this.delete, required this.more, required this.vente}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class RowProduit extends StatelessWidget {
             title: SecondaryText(
               text: produit.nom,
               color: AppColors.blue),
-            subtitle: ThirdText(text: produit.pu.toString()),
+            subtitle: ThirdText(text: "${produit.pu} fc"),
             trailing: IconButton(
               onPressed: more,
               icon: const Icon(
@@ -77,9 +79,22 @@ class RowProduit extends StatelessWidget {
                       child: IconButton(
                         onPressed: delete,
                         icon: const Icon(
-                            Icons.delete,
+                            CupertinoIcons.delete,
                             size: 18,
                             color: AppColors.blue)))),
+
+                  Card(
+                      shadowColor: AppColors.blue,
+                      surfaceTintColor: AppColors.white,
+                      elevation: 0.6,
+                      child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: IconButton(
+                              onPressed: vente,
+                              icon: const Icon(
+                                  Icons.point_of_sale,
+                                  size: 18,
+                                  color: AppColors.blue)))),
                 ],
               ),
             ),

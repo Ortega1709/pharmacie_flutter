@@ -36,5 +36,8 @@
     "d_accord": "D'accord",
     "prix": "Prix",
     "qte": "Quantité",
-    "date": "Date d'expiration"
+    "date": "Date d'expiration",
+    "vendre": "Vendre",
+    "vente": "Vente",
+    "deconnection": "Déconnection"
 }

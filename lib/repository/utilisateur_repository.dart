@@ -1,21 +1,24 @@
 import 'dart:async';
 
 import 'package:bcrypt/bcrypt.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/repository/database.dart';
 
+
+/// user repository
 class UtilisateurRepository {
 
   final Database _database = Database();
   final String _table = "utilisateur";
 
+  UtilisateurRepository();
 
+  /// save user
   save({required UtilisateurModel utilisateurModel}) async {
 
     String sql =
-        "INSERT INTO $_table (nom, email, mdp, type) VALUES (?, ?, ?, ?)";
+        "INSERT INTO $_table (nom,email,mdp,type) VALUES (?,?,?,?)";
 
     MySqlConnection connection = await _database.getConnection();
 
@@ -28,11 +31,11 @@ class UtilisateurRepository {
 
   }
 
-
+  /// update user
   update({required UtilisateurModel utilisateurModel}) async {
 
     String sql =
-        "UPDATE $_table SET nom=? ,email=? ,mdp=? ,type=? WHERE id=?";
+        "UPDATE $_table SET nom=?,email=?,mdp=?,type=? WHERE id=?";
 
     MySqlConnection connection = await _database.getConnection();
 
@@ -46,7 +49,7 @@ class UtilisateurRepository {
 
   }
 
-
+  /// delete user
   delete({required int id}) async {
 
     String sql = "DELETE FROM $_table WHERE id=?";
@@ -56,6 +59,8 @@ class UtilisateurRepository {
 
   }
 
+
+  /// get all user
   Future<List<UtilisateurModel>> get() async {
 
     List<UtilisateurModel> users = [];
@@ -78,6 +83,7 @@ class UtilisateurRepository {
     return users;
 
   }
+
 
   Future<UtilisateurModel?> authentication({required String email, required String mdp}) async {
 
@@ -106,10 +112,6 @@ class UtilisateurRepository {
   }
 }
 
-void main() async {
 
-
-
-}
 
 

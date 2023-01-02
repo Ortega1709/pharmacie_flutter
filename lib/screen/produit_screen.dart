@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmacie/component/row_produit_component.dart';import 'package:intl/intl.dart';
+import 'package:pharmacie/repository/produit_repository.dart';
 
 import '../component/form_field_component.dart';
+import '../component/form_field_number_component.dart';
 import '../component/header_dialog_component.dart';
 import '../component/search_bar_component.dart';
 import '../model/produit_model.dart';
@@ -28,6 +32,9 @@ class _ProduitScreenState extends State<ProduitScreen> {
   TextEditingController puController = TextEditingController();
   TextEditingController qteController = TextEditingController();
   TextEditingController dateExpController = TextEditingController();
+  /// controllers
+  TextEditingController numberController = TextEditingController();
+  TextEditingController montantController = TextEditingController();
 
   @override
   void dispose() {
@@ -37,6 +44,8 @@ class _ProduitScreenState extends State<ProduitScreen> {
     puController.dispose();
     qteController.dispose();
     dateExpController.dispose();
+    numberController.dispose();
+    montantController.dispose();
     super.dispose();
   }
 
@@ -52,7 +61,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 32.0),
         child: FutureBuilder(
-          future: null,
+          future: ProduitRepository().get(),
           builder: (context, snapshot) {
 
             /// if connection is waiting show circular progress indicator
@@ -67,31 +76,42 @@ class _ProduitScreenState extends State<ProduitScreen> {
                   child: PrimaryText(text: AppLocalizations.of(context)!.oops));
             }
 
-            return true
+            return snapshot.data!.isEmpty
                 ? Center(
                 child: PrimaryText(text: AppLocalizations.of(context)!.no_produit))
-                : SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SearchBar(hintText: "ex: ibuprofen"),
-                  const SizedBox(height: 16.0),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return RowProduit(
-                        produit: ProduitModel(nom: "", pu: 4, qte: 4, dateExp: ""),
-                        delete: () async {
+                : Column(
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: Column(
+                          children: const [
+                            SearchBar(hintText: "ex: ibuprofen"),
+                            SizedBox(height: 16.0),
+                      ],
+                    )),
+                    Expanded(
+                      flex: 8,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return RowProduit(
+                            produit: snapshot.data![index],
+                            delete: () async {
+                              _deleteDialogue(context, snapshot.data![index].id, snapshot.data![index].nom);
+                            },
+                            more: () async {
+                              _updateDialogue(context, snapshot.data![index].id, snapshot.data![index]);
+                            },
+                            vente: () async {
+                              _vendreDialog(snapshot.data![index]);
+                            },
+                          );
                         },
-                        more: () async {
-
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
+                      ),
+                    ),
+                  ],
+                );
           },
         ),
       ),
@@ -103,7 +123,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
               onPressed: () async {
                 _refresh();
               },
-              child: const Icon(Icons.refresh, color: AppColors.white)),
+              child: const Icon(FontAwesomeIcons.refresh, color: AppColors.white, size: 18)),
 
           const SizedBox(width: 5),
           FloatingActionButton.extended(
@@ -206,12 +226,13 @@ class _ProduitScreenState extends State<ProduitScreen> {
                     FloatingActionButton.extended(
                       onPressed: () async {
                         ProduitModel data = ProduitModel(
+                            id: 0,
                             nom: nomController.text.trim(),
                             pu: int.parse(puController.text),
                             qte: int.parse(qteController.text),
                             dateExp: dateExpController.text.toString());
 
-                        //ProduitRepository().save(produitModel: data);
+                        ProduitRepository().save(produitModel: data);
                         _clearInput();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.ajouter_produit);
@@ -260,7 +281,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
   }
 
   /// methode
-  _updateDialogue(BuildContext context, String id, ProduitModel produitModel) {
+  _updateDialogue(BuildContext context, int id, ProduitModel produitModel) {
 
     /// initialize our controllers with retrieved data
     nomController.text = produitModel.nom;
@@ -344,12 +365,13 @@ class _ProduitScreenState extends State<ProduitScreen> {
                     FloatingActionButton.extended(
                       onPressed: () async {
                         ProduitModel data = ProduitModel(
+                            id: id,
                             nom: nomController.text.trim(),
                             pu: int.parse(puController.text),
                             qte: int.parse(qteController.text),
                             dateExp: dateExpController.text.toString());
 
-                        //ProduitRepository().update(id: id, produitModel: data);
+                        ProduitRepository().update(produitModel: data);
                         _clearInput();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.modifier_produit);
@@ -369,7 +391,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
   }
 
   /// methode
-  _deleteDialogue(BuildContext context, String id, String nom) {
+  _deleteDialogue(BuildContext context, int id, String nom) {
 
     return showDialog(
       context: context,
@@ -390,7 +412,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
             ),
             TextButton(
                 onPressed: () async {
-                  //ProduitRepository().delete(id: id);
+                  ProduitRepository().delete(id: id);
                   Navigator.of(context).pop();
                   _infoDialogue(AppLocalizations.of(context)!.supprimer_produit);
                 },
@@ -401,6 +423,56 @@ class _ProduitScreenState extends State<ProduitScreen> {
         );
       },
     );
+  }
+
+  /// methode
+  _vendreDialog(ProduitModel produitModel) async {
+
+    nomController.text = produitModel.nom;
+    montantController.text = produitModel.pu.toString();
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.background,
+          title: HeaderDialog(title: AppLocalizations.of(context)!.vente),
+          content: SizedBox(
+            width: 400,
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+
+                    CostumFormField(
+                      hintText: '',
+                      icon: Icons.vaccines,
+                      keyboardType: TextInputType.text,
+                      controller: nomController,
+                    ),
+
+                    const SizedBox(height: 16.0),
+                    FormFieldNumber(max: produitModel.qte, controller: numberController, montant: produitModel.pu, montantController: montantController),
+
+                    const SizedBox(height: 16.0),
+                    FloatingActionButton.extended(
+                      onPressed: () async {
+                        print(montantController.text);
+                      },
+                      backgroundColor: AppColors.blue,
+                      label: SecondaryText(text: AppLocalizations.of(context)!.vendre),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
   }
 
   /// clear methode
