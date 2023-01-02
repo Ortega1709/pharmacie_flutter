@@ -2,6 +2,8 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/repository/utilisateur_repository.dart';
+import 'package:pharmacie/screen/main_screen_medecin.dart';
+import 'package:pharmacie/screen/main_screen_pharmacien.dart';
 import 'package:pharmacie/style/color.dart';
 import 'package:pharmacie/style/text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -87,9 +89,26 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
                             if (utilisateur != null) {
 
-                              Navigator
+                              switch(utilisateur.type) {
+                                case "médecin":
+                                  initialize();
+                                  Navigator
+                                      .of(context)
+                                      .push(MaterialPageRoute(builder: (context) => MainScreenMedecin(utilisateurModel: utilisateur)));
+                                  break;
+                                case "pharmacien":
+                                  initialize();
+                                  Navigator
+                                      .of(context)
+                                    .push(MaterialPageRoute(builder: (context) => MainScreenPharmacie(utilisateurModel: utilisateur)));
+                                  break;
+                                case "admin":
+                                  initialize();
+                                  Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder: (context) => MainScreenAdmin(utilisateurModel: utilisateur)));
+                                  break;
+                              }
 
                             } else {
 
@@ -127,6 +146,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         ),
       ),
     );
+  }
+
+  /// initialize
+  initialize() {
+
+    emailController.clear();
+    passwordController.clear();
+
+    setState(() {
+      isLoading = false;
+    });
+
   }
 
   /// message banner

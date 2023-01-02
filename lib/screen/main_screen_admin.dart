@@ -6,6 +6,7 @@ import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pharmacie/screen/commande_screen.dart';
 import 'package:pharmacie/screen/dashboard_screen.dart';
+import 'package:pharmacie/screen/settings_screen.dart';
 import 'package:pharmacie/screen/information_screen.dart';
 import 'package:pharmacie/screen/produit_screen.dart';
 import 'package:pharmacie/screen/utilisateur_screen.dart';
@@ -75,6 +76,7 @@ class _MainScreenAdminState extends State<MainScreenAdmin> {
                     NavigationRailDestination(icon: const Icon(FontAwesomeIcons.prescriptionBottleMedical, size: 18), label: Text(AppLocalizations.of(context)!.produits)),
                     NavigationRailDestination(icon: const Icon(FontAwesomeIcons.users, size: 18), label: Text(AppLocalizations.of(context)!.utilisateurs)),
                     NavigationRailDestination(icon: const Icon(FontAwesomeIcons.dolly, size: 18), label: Text(AppLocalizations.of(context)!.commandes)),
+                    NavigationRailDestination(icon: const Icon(FontAwesomeIcons.gears, size: 18), label: Text((AppLocalizations.of(context)!.parametre)))
                   ],
 
                   selectedIndex: currentIndex,
@@ -95,7 +97,8 @@ class _MainScreenAdminState extends State<MainScreenAdmin> {
                   VenteScreen(utilisateurModel: widget.utilisateurModel),
                   ProduitScreen(utilisateurModel: widget.utilisateurModel),
                   UtilisateurScreen(utilisateurModel: widget.utilisateurModel),
-                  CommandeScreen(utilisateurModel: widget.utilisateurModel)
+                  CommandeScreen(utilisateurModel: widget.utilisateurModel),
+                  SettingsScreen(utilisateurModel: widget.utilisateurModel)
                 ],
               ),
             ),

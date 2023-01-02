@@ -40,5 +40,6 @@
     "date": "Expiration date",
     "vendre": "Sell",
     "vente": "Sale",
-    "deconnection": "Logout"
+    "deconnection": "Logout",
+    "parametre": "Settings"
 }
