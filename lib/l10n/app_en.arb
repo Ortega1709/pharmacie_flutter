@@ -30,9 +30,12 @@
     "supprimer_produit": "You have deleted a product",
     "modifier_produit": "Vous have modified a product",
     "confirmation_p": "Do you want delete this product ?",
+    "confirmation_ac": "You removed an item from the order",
     "vendre_produit": "You sold a product",
     "supprimer": "Delete",
     "annuler": "Canceled",
+    "commander": "Order",
+    "q_ca": "Do you want to remove this item from the order ?",
     "supprimer_utilisateur": "You have deleted a user",
     "d_accord": "Okay",
     "prix": "Price",
@@ -41,5 +44,11 @@
     "vendre": "Sell",
     "vente": "Sale",
     "deconnection": "Logout",
-    "parametre": "Settings"
+    "parametre": "Settings",
+    "nomf": "Name of supplier",
+    "adressef": "Supplier address",
+    "numerof": "Supplier number",
+    "confCommande": "Do you really want to place an order ?",
+    "oui": "Yes",
+    "commande_p": "You have placed an order"
 }

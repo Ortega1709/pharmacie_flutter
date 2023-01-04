@@ -88,22 +88,21 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 .authentication(email: emailController.text, mdp: passwordController.text);
 
                             if (utilisateur != null) {
-
                               switch(utilisateur.type) {
                                 case "médecin":
-                                  initialize();
+                                  _initialize();
                                   Navigator
                                       .of(context)
                                       .push(MaterialPageRoute(builder: (context) => MainScreenMedecin(utilisateurModel: utilisateur)));
                                   break;
                                 case "pharmacien":
-                                  initialize();
+                                  _initialize();
                                   Navigator
                                       .of(context)
                                     .push(MaterialPageRoute(builder: (context) => MainScreenPharmacie(utilisateurModel: utilisateur)));
                                   break;
                                 case "admin":
-                                  initialize();
+                                  _initialize();
                                   Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder: (context) => MainScreenAdmin(utilisateurModel: utilisateur)));
@@ -117,7 +116,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               });
 
                               /// if user not exist, return message
-                              banner(AppLocalizations.of(context)!.erreur_au);
+                              _banner(AppLocalizations.of(context)!.erreur_au);
 
                             }
 
@@ -149,7 +148,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
   /// initialize
-  initialize() {
+  _initialize() {
 
     emailController.clear();
     passwordController.clear();
@@ -161,7 +160,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
   /// message banner
-  banner(String text) {
+  _banner(String text) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         elevation: 5,
