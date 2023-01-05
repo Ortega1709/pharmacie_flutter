@@ -120,9 +120,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
                             }
 
-
-
-
                           },
                           backgroundColor: AppColors.blue,
                           child: isLoading

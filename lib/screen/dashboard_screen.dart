@@ -286,7 +286,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: const [
-                                        SecondaryText(text: "0", color: AppColors.blue, fontSize: 16.0)
+                                        SecondaryText(text: "", color: AppColors.blue, fontSize: 16.0)
                                       ],
                                     )
                                   ],

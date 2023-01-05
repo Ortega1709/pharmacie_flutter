@@ -127,7 +127,7 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
                       return RowDetailCommande(
                         detailCommandeModel: snapshot.data![index],
                         delete: () async {
-                          _deleteDialogue(context, index, snapshot.data![index].nom);
+                          _deleteDialogue(context, index, snapshot.data![index].nom!);
                         },
                         more: () async {
                           _updateDialogue(context, index, snapshot.data![index]);
@@ -285,7 +285,7 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
 
     List<DetailCommandeModel>? details = await _showCommande();
 
-    nomController.text = details![id].nom;
+    nomController.text = details![id].nom!;
     puController.text = details![id].prix.toString();
     qteController.text = details![id].qte.toString();
 
@@ -415,11 +415,11 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
   }
 
   // calculate total of items
-  _total(List<DetailCommandeModel> detailCommandes) {
+  int _total(List<DetailCommandeModel> detailCommandes) {
 
-    num total = 0;
+    int total = 0;
     for(var items in detailCommandes) {
-      total = total + items.total;
+      total = total + items.total!;
     }
     return total;
   }
@@ -570,7 +570,8 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
                     const SizedBox(height: 16.0),
                     FloatingActionButton.extended(
                       onPressed: () {
-                        print(_total(items!));
+
+                        int total = _total(items!);
 
                         CommandeModel commandeModel = CommandeModel(
                             id: 1,
@@ -578,7 +579,7 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
                             fournisseur: fournisseurController.text,
                             adresseFournisseur: ad_fournisseurController.text,
                             numeroFournisseur: num_fournisseurController.text,
-                            total: _total(items!),
+                            total: total,
                             date: DateFormat("dd-MM-yyyy").format(DateTime.now()));
 
 

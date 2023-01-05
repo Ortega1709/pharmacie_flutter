@@ -4,26 +4,27 @@ import 'package:pharmacie/model/detail_commande_model.dart';
 // commande model
 class CommandeModel {
 
-  final int id;
-  final int idUtilisateur;
-  final String fournisseur; // name of supplier
-  final String adresseFournisseur;
-  final String numeroFournisseur;
-  final String date;
-  final int total;
-  final DetailCommandeModel? detailCommandeModel;
+  late int? id;
+  late int? idUtilisateur;
+  late String? fournisseur; // name of supplier
+  late String? adresseFournisseur;
+  late String? numeroFournisseur;
+  late String? date;
+  late int? total;
+  late List<DetailCommandeModel>? detailCommandeModel;
 
   // constructor
   CommandeModel({
-    required this.id,
-    required this.idUtilisateur,
-    required this.fournisseur,
-    required this.adresseFournisseur,
-    required this.numeroFournisseur,
-    required this.total,
+    this.id,
+    this.idUtilisateur,
+    this.fournisseur,
+    this.adresseFournisseur,
+    this.numeroFournisseur,
+    this.total,
     this.detailCommandeModel,
-    required this.date
+    this.date
   });
+
 
   // toJson
   Map<String, dynamic> toJson() => {

@@ -3,20 +3,20 @@
 // detail commande model
 class DetailCommandeModel {
 
-  final int id;
-  final int idCommande;
-  late final String nom;
-  final int qte;
-  final int prix;
-  final int total;
+  late int? id;
+  late int? idCommande;
+  late String? nom;
+  late int? qte;
+  late int? prix;
+  late int? total;
 
   DetailCommandeModel({
     this.id = 0,
     this.idCommande = 0,
-    required this.nom,
-    required this.qte,
-    required this.prix,
-    required this.total
+    this.nom,
+    this.qte,
+    this.prix,
+    this.total
   });
 
   Map<String, dynamic> toJson() => {
