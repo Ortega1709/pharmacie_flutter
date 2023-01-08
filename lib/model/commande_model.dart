@@ -11,7 +11,6 @@ class CommandeModel {
   late String? numeroFournisseur;
   late String? date;
   late int? total;
-  late List<DetailCommandeModel>? detailCommandeModel;
 
   // constructor
   CommandeModel({
@@ -21,7 +20,6 @@ class CommandeModel {
     this.adresseFournisseur,
     this.numeroFournisseur,
     this.total,
-    this.detailCommandeModel,
     this.date
   });
 
@@ -33,8 +31,8 @@ class CommandeModel {
     "fournisseur": fournisseur,
     "adresse_fournisseur": adresseFournisseur,
     "numero_fournisseur": numeroFournisseur,
-    "total": total,
-    "detail_commande": DetailCommandeModel(nom: '', qte: 0, prix: 0, total: 0).toJson()
+    "date": date,
+    "total": total
   };
 
   // fromJson

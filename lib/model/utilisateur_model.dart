@@ -2,11 +2,11 @@ import 'package:bcrypt/bcrypt.dart';
 
 /// utilisateur model
 class UtilisateurModel {
-  final int id;
-  final String nom;
-  final String email;
-  final String mdp;
-  final String type;
+  int id;
+  String nom;
+  String email;
+  String mdp;
+  String type;
 
   UtilisateurModel(
       {

@@ -58,7 +58,7 @@ class _MainScreenPharmacieState extends State<MainScreenPharmacie> {
 
                 extended: isExtend,
                 indicatorColor: AppColors.blue,
-                onDestinationSelected: (index) async => setState(() {
+                onDestinationSelected: (index) => setState(() {
                   currentIndex = index;
                   pageController.jumpToPage(currentIndex);
                 }),

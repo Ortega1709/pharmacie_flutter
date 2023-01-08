@@ -1,12 +1,16 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
+import 'package:pharmacie/model/action_model.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
+import 'package:pharmacie/repository/action_repository.dart';
 import 'package:pharmacie/repository/utilisateur_repository.dart';
 import 'package:pharmacie/screen/main_screen_medecin.dart';
 import 'package:pharmacie/screen/main_screen_pharmacien.dart';
 import 'package:pharmacie/style/color.dart';
 import 'package:pharmacie/style/text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pharmacie/utils/custom_actions.dart';
+import 'package:pharmacie/utils/custom_date.dart';
 
 import '../component/form_field_component.dart';
 import 'main_screen_admin.dart';
@@ -91,18 +95,33 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               switch(utilisateur.type) {
                                 case "médecin":
                                   _initialize();
+                                  ActionRepository().save(actionModel: ActionModel(
+                                      id: 0,
+                                      email: utilisateur.email,
+                                      action: CustomActions.connexion,
+                                      date: CustomDate.now()));
                                   Navigator
                                       .of(context)
                                       .push(MaterialPageRoute(builder: (context) => MainScreenMedecin(utilisateurModel: utilisateur)));
                                   break;
                                 case "pharmacien":
                                   _initialize();
+                                  ActionRepository().save(actionModel: ActionModel(
+                                      id: 0,
+                                      email: utilisateur.email,
+                                      action: CustomActions.connexion,
+                                      date: CustomDate.now()));
                                   Navigator
                                       .of(context)
                                     .push(MaterialPageRoute(builder: (context) => MainScreenPharmacie(utilisateurModel: utilisateur)));
                                   break;
                                 case "admin":
                                   _initialize();
+                                  ActionRepository().save(actionModel: ActionModel(
+                                      id: 0,
+                                      email: utilisateur.email,
+                                      action: CustomActions.connexion,
+                                      date: CustomDate.now()));
                                   Navigator
                                   .of(context)
                                   .push(MaterialPageRoute(builder: (context) => MainScreenAdmin(utilisateurModel: utilisateur)));

@@ -11,4 +11,5 @@ class AppColors {
   static const grey = Colors.grey;
   static const red = Colors.red;
   static const transparent = Colors.transparent;
+  static const green = Colors.green;
 }

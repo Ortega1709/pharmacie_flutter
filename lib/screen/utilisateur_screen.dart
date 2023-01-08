@@ -32,6 +32,9 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
   /// form key
   final _formKey = GlobalKey<FormState>();
 
+  // main list
+  List<UtilisateurModel> main = [];
+
   /// main list product
 
   /// text form controllers
@@ -40,6 +43,11 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
   TextEditingController passwordController = TextEditingController();
 
   /// initialize it with retrieved data
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -50,6 +58,11 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
     passwordController.dispose();
 
     super.dispose();
+  }
+
+  // fetch data
+  fetchData() async {
+    main = await UtilisateurRepository().get();
   }
 
 
@@ -65,56 +78,74 @@ class _UtilisateurScreenState extends State<UtilisateurScreen> {
       /// body of screen
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 32.0),
-        child: FutureBuilder(
-          future: UtilisateurRepository().get(),
-          builder: (context, snapshot) {
-
-            /// if connection is waiting show circular progress indicator
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(color: AppColors.blue));
-            }
-
-            /// if there are one error
-            if (snapshot.hasError) {
-              return Center(
-                child: PrimaryText(text: AppLocalizations.of(context)!.oops));
-            }
-
-
-
-            return snapshot.data!.isEmpty
-                ? Center(
-              child: PrimaryText(text: AppLocalizations.of(context)!.no_user))
-                : Column(
+        child: Column(
+          children: [
+            Expanded(
+                flex: 1,
+                child: Column(
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        children: const [
-                          SearchBar(hintText: "ex: ortega"),
-                          SizedBox(height: 16.0)])),
+                    TextField(
+                      style: GoogleFonts.inter(color: AppColors.blue),
+                      cursorColor: AppColors.blue,
+                      /*onChanged: (value) => updateList(value),*/
 
-                    Expanded(
-                        flex: 8,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return RowUtilisateur(
-                              utilisateur: snapshot.data![index],
-                              delete: () async {
-                                _deleteDialogue(context, snapshot.data![index].id, snapshot.data![index].email);
-                              },
-                              more: () async {
-                                _updateDialogue(context, snapshot.data![index].id, snapshot.data![index]);
-                              },
-                            );
-                          },
-                        ),)
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: AppColors.white,
+                        prefixIcon: const Icon(
+                            CupertinoIcons.search,
+                            color: AppColors.blue),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                            borderSide: BorderSide.none),
+                        hintText: "ex: ibuprofen",
+                        hintStyle: GoogleFonts.inter(color: AppColors.grey),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
                   ],
-                );
-          },
+                )),
+            Expanded(
+                flex: 8,
+                child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: const BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(16.0))
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SingleChildScrollView(
+                          child: DataTable(
+                            decoration: const BoxDecoration(
+                                color: AppColors.white
+                            ),
+                            columns: const [
+                              DataColumn(label: SecondaryText(text: "Nom", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Name of user"),
+                              DataColumn(label: SecondaryText(text: "Email", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Email of user"),
+                              DataColumn(label: SecondaryText(text: "Type", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Type of user"),
+                              DataColumn(label: SecondaryText(text: "Actions", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Actions"),
+                            ],
+                            rows: main.map((item) =>
+                                DataRow(cells: [
+                                  DataCell(SecondaryText(text: item.nom, color: AppColors.blue)),
+                                  DataCell(SecondaryText(text: item.email, color: AppColors.blue)),
+                                  DataCell(SecondaryText(text: item.type, color: AppColors.blue)),
+                                  DataCell(
+                                      Row(children: [
+                                        IconButton(onPressed: () async => _updateDialogue(context, item.id, item), icon: const Icon(FontAwesomeIcons.pencil, color: AppColors.blue, size: 18), tooltip: "Editer"),
+                                        IconButton(onPressed: () {}, icon: const Icon(FontAwesomeIcons.cashRegister, color: AppColors.blue, size: 18), tooltip: "Vendre"),
+                                      ],)),
+
+                                ])
+                            ).toList(),
+                          )
+                      ),
+                    )
+                )
+            ),
+          ],
         ),
       ),
 

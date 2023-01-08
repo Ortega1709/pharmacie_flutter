@@ -3,11 +3,11 @@
 /// product model
 class ProduitModel {
 
-  final int id;
-  final String nom;
-  final int pu;
-  final int qte;
-  final dynamic dateExp;
+  int id;
+  String nom;
+  int pu;
+  int qte;
+  dynamic dateExp;
 
   ProduitModel({
     required this.id,

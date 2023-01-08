@@ -50,43 +50,38 @@ class _MainScreenAdminState extends State<MainScreenAdmin> {
         child: Row(
           children: [
 
-            MouseRegion(
+            NavigationRail(
 
-              onEnter: (_) => setState(() { isExtend = !isExtend; }),
-              onExit: (_) => setState(() { isExtend = !isExtend; }),
-              child: NavigationRail(
-
-                  extended: isExtend,
-                  indicatorColor: AppColors.blue,
-                  onDestinationSelected: (index) async => setState(() {
-                    currentIndex = index;
-                    pageController.jumpToPage(currentIndex);
-                  }),
+                extended: isExtend,
+                indicatorColor: AppColors.blue,
+                onDestinationSelected: (index) async => setState(() {
+                  currentIndex = index;
+                  pageController.jumpToPage(index);
+                }),
 
 
-                  unselectedIconTheme: const IconThemeData(color: AppColors.blue),
-                  unselectedLabelTextStyle: GoogleFonts.inter(color: AppColors.grey, fontSize: 16.0, fontWeight: FontWeight.w500),
-                  selectedLabelTextStyle: GoogleFonts.inter(color: AppColors.blue, fontSize: 16.0, fontWeight: FontWeight.w500),
-                  groupAlignment: 0,
+                unselectedIconTheme: const IconThemeData(color: AppColors.blue),
+                unselectedLabelTextStyle: GoogleFonts.inter(color: AppColors.grey, fontSize: 16.0, fontWeight: FontWeight.w500),
+                selectedLabelTextStyle: GoogleFonts.inter(color: AppColors.blue, fontSize: 16.0, fontWeight: FontWeight.w500),
+                groupAlignment: 0,
 
-                  destinations: [
-                    NavigationRailDestination(icon: const Icon(FontAwesomeIcons.chartSimple, size: 18), label: Text(AppLocalizations.of(context)!.dashboard)),
-                    NavigationRailDestination(icon: const Icon(FontAwesomeIcons.magnifyingGlass, size: 18), label: Text(AppLocalizations.of(context)!.informations)),
-                    NavigationRailDestination(icon: const Icon(FontAwesomeIcons.coins, size: 18), label: Text(AppLocalizations.of(context)!.ventes)),
-                    NavigationRailDestination(icon: const Icon(FontAwesomeIcons.prescriptionBottleMedical, size: 18), label: Text(AppLocalizations.of(context)!.produits)),
-                    NavigationRailDestination(icon: const Icon(FontAwesomeIcons.users, size: 18), label: Text(AppLocalizations.of(context)!.utilisateurs)),
-                    NavigationRailDestination(icon: const Icon(FontAwesomeIcons.dolly, size: 18), label: Text(AppLocalizations.of(context)!.commandes)),
-                    NavigationRailDestination(icon: const Icon(FontAwesomeIcons.gears, size: 18), label: Text((AppLocalizations.of(context)!.parametre)))
-                  ],
+                destinations: [
+                  NavigationRailDestination(icon: const Icon(FontAwesomeIcons.chartSimple, size: 18), label: Text(AppLocalizations.of(context)!.dashboard)),
+                  NavigationRailDestination(icon: const Icon(FontAwesomeIcons.magnifyingGlass, size: 18), label: Text(AppLocalizations.of(context)!.informations)),
+                  NavigationRailDestination(icon: const Icon(FontAwesomeIcons.coins, size: 18), label: Text(AppLocalizations.of(context)!.ventes)),
+                  NavigationRailDestination(icon: const Icon(FontAwesomeIcons.prescriptionBottleMedical, size: 18), label: Text(AppLocalizations.of(context)!.produits)),
+                  NavigationRailDestination(icon: const Icon(FontAwesomeIcons.users, size: 18), label: Text(AppLocalizations.of(context)!.utilisateurs)),
+                  NavigationRailDestination(icon: const Icon(FontAwesomeIcons.dolly, size: 18), label: Text(AppLocalizations.of(context)!.commandes)),
+                  NavigationRailDestination(icon: const Icon(FontAwesomeIcons.gears, size: 18), label: Text((AppLocalizations.of(context)!.parametre)))
+                ],
 
-                  selectedIndex: currentIndex,
-              ),
+                selectedIndex: currentIndex,
             ),
 
             Expanded(
               child: PageView(
                 controller: pageController,
-                onPageChanged: (index) {
+                onPageChanged: (index) async {
                   setState(() {
                     currentIndex = index;
                   });

@@ -1,18 +1,20 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pharmacie/component/row_produit_component.dart';import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 import 'package:pharmacie/model/detail_vente_model.dart';
 import 'package:pharmacie/model/vente_model.dart';
 import 'package:pharmacie/repository/produit_repository.dart';
 import 'package:pharmacie/repository/vente_repository.dart';
+import 'package:pharmacie/utils/custom_date.dart';
 
 import '../component/form_field_component.dart';
 import '../component/form_field_number_component.dart';
 import '../component/header_dialog_component.dart';
-import '../component/search_bar_component.dart';
 import '../model/produit_model.dart';
 import '../model/utilisateur_model.dart';
 import '../style/color.dart';
@@ -31,17 +33,34 @@ class ProduitScreen extends StatefulWidget {
 
 class _ProduitScreenState extends State<ProduitScreen> {
 
-  /// form key
+  // form key
   final _formKey = GlobalKey<FormState>();
 
-  /// text form controllers
+  // text form controllers
   TextEditingController nomController = TextEditingController();
   TextEditingController puController = TextEditingController();
   TextEditingController qteController = TextEditingController();
   TextEditingController dateExpController = TextEditingController();
-  /// controllers
-  TextEditingController numberController = TextEditingController();
-  TextEditingController montantController = TextEditingController();
+
+  static List<ProduitModel> main = [];
+
+  // fetch data
+  fetchData() async => main = await ProduitRepository().get();
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
+
+  // display list
+  List<ProduitModel> items = List.from(main);
+
+  void updateList(String value) {
+    setState(() {
+      items = main.where((item) => item.nom.toLowerCase().contains(value.toLowerCase())).toList();
+    });
+  }
 
   @override
   void dispose() {
@@ -51,10 +70,9 @@ class _ProduitScreenState extends State<ProduitScreen> {
     puController.dispose();
     qteController.dispose();
     dateExpController.dispose();
-    numberController.dispose();
-    montantController.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,59 +85,75 @@ class _ProduitScreenState extends State<ProduitScreen> {
       /// body of screen
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 32.0),
-        child: FutureBuilder(
-          future: ProduitRepository().get(),
-          builder: (context, snapshot) {
-
-            /// if connection is waiting show circular progress indicator
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                  child: CircularProgressIndicator(color: AppColors.blue));
-            }
-
-            /// if there are one error
-            if (snapshot.hasError) {
-              return Center(
-                  child: PrimaryText(text: AppLocalizations.of(context)!.oops));
-            }
-
-            return snapshot.data!.isEmpty
-                ? Center(
-                child: PrimaryText(text: AppLocalizations.of(context)!.no_produit))
-                : Column(
+        child: Column(
+          children: [
+            Expanded(
+                flex: 1,
+                child: Column(
                   children: [
-                    Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: const [
-                            SearchBar(hintText: "ex: ibuprofen"),
-                            SizedBox(height: 16.0),
-                      ],
-                    )),
-                    Expanded(
-                      flex: 8,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return RowProduit(
-                            produit: snapshot.data![index],
-                            delete: () async {
-                              _deleteDialogue(context, snapshot.data![index].id, snapshot.data![index].nom);
-                            },
-                            more: () async {
-                              _updateDialogue(context, snapshot.data![index].id, snapshot.data![index]);
-                            },
-                            vente: snapshot.data![index].qte == 0 ? null : () async {
-                              _vendreDialog(snapshot.data![index]);
-                            },
-                          );
-                        },
+                    TextField(
+                      style: GoogleFonts.inter(color: AppColors.blue),
+                      cursorColor: AppColors.blue,
+                      /*onChanged: (value) => updateList(value),*/
+
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: AppColors.white,
+                        prefixIcon: const Icon(
+                            CupertinoIcons.search,
+                            color: AppColors.blue),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                            borderSide: BorderSide.none),
+                        hintText: "ex: ibuprofen",
+                        hintStyle: GoogleFonts.inter(color: AppColors.grey),
                       ),
                     ),
+                    const SizedBox(height: 16.0),
                   ],
-                );
-          },
+                )),
+            Expanded(
+                flex: 8,
+                child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: const BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(16.0))
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SingleChildScrollView(
+                          child: DataTable(
+                            decoration: const BoxDecoration(
+                                color: AppColors.white
+                            ),
+                            columns: const [
+                              DataColumn(label: SecondaryText(text: "Nom", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Name of product"),
+                              DataColumn(label: SecondaryText(text: "Prix unitaire", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "price of product"),
+                              DataColumn(label: SecondaryText(text: "Quantité", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Number of product"),
+                              DataColumn(label: SecondaryText(text: "Date péremption", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Peremption date"),
+                              DataColumn(label: SecondaryText(text: "Actions", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Actions"),
+                            ],
+                            rows: main.map((item) =>
+                                DataRow(cells: [
+                                  DataCell(SecondaryText(text: item.nom, color: AppColors.blue)),
+                                  DataCell(SecondaryText(text: item.pu.toString(), color: AppColors.blue)),
+                                  DataCell(SecondaryText(text: item.qte.toString(), color: AppColors.blue)),
+                                  DataCell(SecondaryText(text: item.dateExp, color: AppColors.blue)),
+                                  DataCell(
+                                      Row(children: [
+                                        IconButton(onPressed: () async => _updateDialogue(context, item.id, item), icon: const Icon(FontAwesomeIcons.pencil, color: AppColors.blue, size: 18), tooltip: "Editer"),
+                                      ],)),
+
+                                ])
+                            ).toList(),
+                          )
+                      ),
+                    )
+                )
+            ),
+          ],
         ),
       ),
       floatingActionButton: Row(
@@ -127,8 +161,10 @@ class _ProduitScreenState extends State<ProduitScreen> {
         children: [
           FloatingActionButton(
               backgroundColor: AppColors.blue,
-              onPressed: () async {
-                _refresh();
+              onPressed: () {
+                setState(() {
+
+                });
               },
               child: const Icon(FontAwesomeIcons.refresh, color: AppColors.white, size: 18)),
 
@@ -149,10 +185,6 @@ class _ProduitScreenState extends State<ProduitScreen> {
     );
   }
 
-  /// refresh state
-  _refresh() {
-    setState(() {});
-  }
 
   /// methode
   _addDialogue(BuildContext context) {
@@ -213,8 +245,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
                        /// check if date isn't null
                        if (pickedDate != null) {
                          setState(() {
-                           dateExpController.text = DateFormat("dd-MM-yyyy")
-                               .format(pickedDate);
+                           dateExpController.text = CustomDate.custom(pickedDate);
                          });
                        }
                      },
@@ -275,7 +306,9 @@ class _ProduitScreenState extends State<ProduitScreen> {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                setState(() {});
+                setState(() {
+
+                });
               },
               child: SecondaryText(
                   text: AppLocalizations.of(context)!.d_accord,
@@ -380,6 +413,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
 
                         ProduitRepository().update(produitModel: data);
                         _clearInput();
+                        fetchData();
                         Navigator.of(context).pop();
                         _infoDialogue(AppLocalizations.of(context)!.modifier_produit);
 
@@ -433,75 +467,7 @@ class _ProduitScreenState extends State<ProduitScreen> {
   }
 
   /// methode
-  _vendreDialog(ProduitModel produitModel) async {
 
-    nomController.text = produitModel.nom;
-    montantController.text = produitModel.pu.toString();
-
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppColors.background,
-          title: HeaderDialog(title: AppLocalizations.of(context)!.vente),
-          content: SizedBox(
-            width: 400,
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-
-                    CostumFormField(
-                      hintText: '',
-                      icon: Icons.vaccines,
-                      keyboardType: TextInputType.text,
-                      controller: nomController,
-                    ),
-
-                    const SizedBox(height: 16.0),
-                    FormFieldNumber(max: produitModel.qte, controller: numberController, montant: produitModel.pu, montantController: montantController),
-
-                    const SizedBox(height: 16.0),
-                    FloatingActionButton.extended(
-                      onPressed: () async {
-
-                        // rest of the initial quantity - the quantity inserted
-                        int reste = produitModel.qte - int.parse(numberController.text);
-                        
-                        // create model of detail vante
-                        DetailVenteModel detailVenteModel = DetailVenteModel(
-                            idProduit: produitModel.id, 
-                            idVente: 0, 
-                            qte: int.parse(numberController.text));
-
-                        // create model of vente
-                        VenteModel venteModel = VenteModel(
-                            id: 0, 
-                            idUtilisateur: widget.utilisateurModel.id, 
-                            total: int.parse(montantController.text),
-                            date: DateFormat("dd-MM-yyyy").format(DateTime.now()),
-                            detailVenteModel: detailVenteModel);
-
-                        VenteRepository().create(venteModel: venteModel, rest: reste);
-                        Navigator.of(context).pop();
-                        _infoDialogue(AppLocalizations.of(context)!.vendre_produit);
-
-                      },
-                      backgroundColor: AppColors.blue,
-                      label: SecondaryText(text: AppLocalizations.of(context)!.vendre),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-
-  }
 
   /// clear methode
   _clearInput() {
@@ -511,3 +477,4 @@ class _ProduitScreenState extends State<ProduitScreen> {
     dateExpController.clear();
   }
 }
+
