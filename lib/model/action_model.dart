@@ -7,6 +7,7 @@ class ActionModel {
   String action;
   String date;
 
+  // constructeur
   ActionModel({
     required this.id,
     required this.email,

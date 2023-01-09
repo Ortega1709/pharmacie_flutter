@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmacie/model/vente_model.dart';
-
-import '../model/utilisateur_model.dart';
 import '../style/color.dart';
 import '../style/text.dart';
 

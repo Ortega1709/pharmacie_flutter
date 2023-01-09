@@ -211,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         },
                       ),
                       FutureBuilder(
-                        future: ProduitRepository().countProduct(),
+                        future: UtilisateurRepository().countUser(),
                         builder: (context, snapshot) {
 
                           // if connection is waiting show circular progress indicator

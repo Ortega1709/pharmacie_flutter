@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmacie/component/commande_component.dart';
 import 'package:pharmacie/model/detail_commande_model.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
-import 'package:pharmacie/screen/detail_commande_screen.dart';
+import 'package:pharmacie/screen/detail_commande_screen_old.dart';
 import 'package:pharmacie/style/color.dart';
 
 import '../component/row_produit_component.dart';

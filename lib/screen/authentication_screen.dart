@@ -1,4 +1,3 @@
-import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmacie/model/action_model.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';

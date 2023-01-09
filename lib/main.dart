@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pharmacie/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/screen/authentication_screen.dart';
-import 'package:pharmacie/screen/produit_screen.dart';
 import 'package:pharmacie/style/color.dart';
 
 /// main function

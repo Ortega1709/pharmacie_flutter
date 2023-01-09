@@ -9,8 +9,10 @@ class Database {
   static String db = "pharmacie";
   static int port = 3306;
 
+  // constructeur
   Database();
 
+  // function connection
   Future<MySqlConnection> getConnection() async {
 
     // settings for connection to database mysql

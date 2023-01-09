@@ -5,6 +5,8 @@ import '../style/color.dart';
 import '../style/text.dart';
 
 class ActionComponent extends StatefulWidget {
+
+  // texte param
   final String text;
 
   const ActionComponent({Key? key, required this.text}) : super(key: key);
