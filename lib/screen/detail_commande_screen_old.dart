@@ -306,6 +306,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
                   children: [
 
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un nom";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.nom,
                         icon: Icons.vaccines,
                         keyboardType: TextInputType.text,
@@ -313,6 +319,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un prix";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.prix,
                         icon: Icons.price_change,
                         keyboardType: TextInputType.number,
@@ -320,6 +332,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer une quantité";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.qte,
                         icon: Icons.storage,
                         keyboardType: TextInputType.number,
@@ -481,6 +499,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
                   children: [
 
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un nom";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.nom,
                         icon: Icons.vaccines,
                         keyboardType: TextInputType.text,
@@ -488,6 +512,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un prix";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.prix,
                         icon: Icons.price_change,
                         keyboardType: TextInputType.number,
@@ -495,6 +525,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer une quantité";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.qte,
                         icon: Icons.storage,
                         keyboardType: TextInputType.number,
@@ -548,6 +584,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
                   children: [
 
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un nom de fournisseur";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.nomf,
                         icon: Icons.person,
                         keyboardType: TextInputType.text,
@@ -555,6 +597,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer une adresse de fournisseur";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.adressef,
                         icon: FontAwesomeIcons.solidAddressBook,
                         keyboardType: TextInputType.number,
@@ -562,6 +610,12 @@ class _DetailCommandeScreenState extends State<DetailCommandeScreen> {
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un numero de fournisseur";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.numerof,
                         icon: FontAwesomeIcons.phone,
                         keyboardType: TextInputType.number,

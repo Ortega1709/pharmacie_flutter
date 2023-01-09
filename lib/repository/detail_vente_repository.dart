@@ -27,11 +27,11 @@ class DetailVenteRepository {
   // get all detail vente model
   Future<List<DetailVenteModel>> get({required int id}) async {
 
-    String sql = "SELECT * FROM $_table_1 WHERE $_table_1.id_commande = ?";
+    String sql = "SELECT * FROM $_table_1 WHERE $_table_1.id_vente = ?";
     MySqlConnection connection = await _database.getConnection();
 
     List<DetailVenteModel> items = [];
-    Results responses = await connection.query(sql);
+    Results responses = await connection.query(sql, [id]);
 
     for (var response in responses) {
       items.add(

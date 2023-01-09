@@ -9,7 +9,6 @@ import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/screen/detail_commande_screen_old.dart';
 import 'package:pharmacie/style/color.dart';
 
-import '../component/row_produit_component.dart';
 import '../component/search_bar_component.dart';
 import '../model/commande_model.dart';
 import '../repository/commande_repository.dart';

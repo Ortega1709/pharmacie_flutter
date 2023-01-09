@@ -4,10 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
-
-import '../component/action_component.dart';
-import '../component/row_produit_component.dart';
-import '../component/search_bar_component.dart';
 import '../model/produit_model.dart';
 import '../repository/produit_repository.dart';
 import '../style/color.dart';

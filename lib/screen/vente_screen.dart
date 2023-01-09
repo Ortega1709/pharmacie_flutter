@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pharmacie/component/row_vente_component.dart';
 import 'package:pharmacie/model/utilisateur_model.dart';
 import 'package:pharmacie/repository/vente_repository.dart';
 import 'package:pharmacie/screen/detail_vente_screen.dart';
+import 'package:pharmacie/screen/more_vente_screen.dart';
 import '../component/header_dialog_component.dart';
-import '../component/search_bar_component.dart';
 import '../model/produit_model.dart';
 import '../model/vente_model.dart';
 import '../style/color.dart';
@@ -76,7 +75,7 @@ class _VenteScreenState extends State<VenteScreen> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16.0),
                             borderSide: BorderSide.none),
-                        hintText: "ex: ibuprofen",
+                        hintText: "ex: 2020",
                         hintStyle: GoogleFonts.inter(color: AppColors.grey),
                       ),
                     ),
@@ -99,13 +98,13 @@ class _VenteScreenState extends State<VenteScreen> {
                                 color: AppColors.white
                             ),
                             columns: const [
-                              DataColumn(label: SecondaryText(text: "Vente", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Name of sale"),
+                              DataColumn(label: SecondaryText(text: "#", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Name of sale"),
                               DataColumn(label: SecondaryText(text: "Total", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Total of sale"),
                               DataColumn(label: SecondaryText(text: "Quantité", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Number of sale"),
                               DataColumn(label: SecondaryText(text: "Date", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Date of sale"),
                               DataColumn(label: SecondaryText(text: "Actions", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Actions"),
                             ],
-                            rows: main.map((item) =>
+                            rows: items.map((item) =>
                                 DataRow(cells: [
                                   DataCell(SecondaryText(text: item.id.toString(), color: AppColors.blue)),
                                   DataCell(SecondaryText(text: "${item.total.toString()} fc", color: AppColors.blue)),
@@ -113,7 +112,9 @@ class _VenteScreenState extends State<VenteScreen> {
                                   DataCell(SecondaryText(text: item.date, color: AppColors.blue)),
                                   DataCell(
                                       Row(children: [
-                                        IconButton(onPressed: () {}, icon: const Icon(FontAwesomeIcons.solidEye, color: AppColors.blue, size: 18), tooltip: "Voir détails"),
+                                        IconButton(onPressed: () {
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoreVenteScreen(venteModel: item)));
+                                        }, icon: const Icon(FontAwesomeIcons.solidEye, color: AppColors.blue, size: 18), tooltip: "Voir détails"),
                                       ],)),
 
                                 ])

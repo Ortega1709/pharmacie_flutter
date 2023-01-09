@@ -11,11 +11,15 @@ class CostumFormField extends StatelessWidget {
   final IconData? icon;
   final TextInputType keyboardType;
   final TextEditingController controller;
+  final String? Function(String?)? validator;
+  final AutovalidateMode? autovalidateMode;
 
   const CostumFormField({Key? key,
     required this.hintText,
     required this.icon,
     required this.keyboardType,
+    this.validator,
+    this.autovalidateMode,
     required this.controller})
       : super(key: key);
 

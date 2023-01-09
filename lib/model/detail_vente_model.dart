@@ -1,9 +1,7 @@
-
-
 /// detail vente model
 class DetailVenteModel {
-
   /// attributes
+  int? id;
   int idProduit;
   String? produit;
   int? total;
@@ -13,6 +11,7 @@ class DetailVenteModel {
 
   DetailVenteModel({
     required this.idProduit,
+    this.id,
     this.produit,
     this.total,
     this.reste,
@@ -22,17 +21,17 @@ class DetailVenteModel {
 
   // data toJson
   Map<String, dynamic> toJson() => {
-    "id_produit": idProduit,
-    "id_vente": idVente,
-    "qte": qte,
-  };
+        "id": id,
+        "id_produit": idProduit,
+        "id_vente": idVente,
+        "qte": qte,
+      };
 
   // data fromJson
   factory DetailVenteModel.fromJson(Map<String, dynamic> json) =>
-
       DetailVenteModel(
+          id: json["id"],
           idProduit: json["id_produit"],
           idVente: json["id_vente"],
           qte: json["qte"]);
-
 }

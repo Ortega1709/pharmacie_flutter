@@ -22,19 +22,19 @@ import '../style/text.dart';
 
 /// produit screen
 class ProduitScreen extends StatefulWidget {
-
   final UtilisateurModel utilisateurModel;
 
-  const ProduitScreen({Key? key, required this.utilisateurModel}) : super(key: key);
+  const ProduitScreen({Key? key, required this.utilisateurModel})
+      : super(key: key);
 
   @override
   State<ProduitScreen> createState() => _ProduitScreenState();
 }
 
 class _ProduitScreenState extends State<ProduitScreen> {
-
   // form key
   final _formKey = GlobalKey<FormState>();
+  final _dialogKey = GlobalKey<FormState>();
 
   // text form controllers
   TextEditingController nomController = TextEditingController();
@@ -58,13 +58,14 @@ class _ProduitScreenState extends State<ProduitScreen> {
 
   void updateList(String value) {
     setState(() {
-      items = main.where((item) => item.nom.toLowerCase().contains(value.toLowerCase())).toList();
+      items = main
+          .where((item) => item.nom.toLowerCase().contains(value.toLowerCase()))
+          .toList();
     });
   }
 
   @override
   void dispose() {
-
     /// free space for our controllers
     nomController.dispose();
     puController.dispose();
@@ -73,14 +74,13 @@ class _ProduitScreenState extends State<ProduitScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        automaticallyImplyLeading: false,
-        title: PrimaryText(text: AppLocalizations.of(context)!.produits)),
+          backgroundColor: AppColors.background,
+          automaticallyImplyLeading: false,
+          title: PrimaryText(text: AppLocalizations.of(context)!.produits)),
 
       /// body of screen
       body: Padding(
@@ -94,13 +94,11 @@ class _ProduitScreenState extends State<ProduitScreen> {
                     TextField(
                       style: GoogleFonts.inter(color: AppColors.blue),
                       cursorColor: AppColors.blue,
-                      /*onChanged: (value) => updateList(value),*/
-
+                      onChanged: (value) => updateList(value),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: AppColors.white,
-                        prefixIcon: const Icon(
-                            CupertinoIcons.search,
+                        prefixIcon: const Icon(CupertinoIcons.search,
                             color: AppColors.blue),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16.0),
@@ -119,40 +117,74 @@ class _ProduitScreenState extends State<ProduitScreen> {
                     height: double.infinity,
                     decoration: const BoxDecoration(
                         color: AppColors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(16.0))
-                    ),
+                        borderRadius: BorderRadius.all(Radius.circular(16.0))),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: SingleChildScrollView(
                           child: DataTable(
-                            decoration: const BoxDecoration(
-                                color: AppColors.white
-                            ),
-                            columns: const [
-                              DataColumn(label: SecondaryText(text: "Nom", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Name of product"),
-                              DataColumn(label: SecondaryText(text: "Prix unitaire", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "price of product"),
-                              DataColumn(label: SecondaryText(text: "Quantité", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Number of product"),
-                              DataColumn(label: SecondaryText(text: "Date péremption", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Peremption date"),
-                              DataColumn(label: SecondaryText(text: "Actions", color: AppColors.blue, fontWeight: FontWeight.w600), tooltip: "Actions"),
-                            ],
-                            rows: main.map((item) =>
-                                DataRow(cells: [
-                                  DataCell(SecondaryText(text: item.nom, color: AppColors.blue)),
-                                  DataCell(SecondaryText(text: item.pu.toString(), color: AppColors.blue)),
-                                  DataCell(SecondaryText(text: item.qte.toString(), color: AppColors.blue)),
-                                  DataCell(SecondaryText(text: item.dateExp, color: AppColors.blue)),
-                                  DataCell(
-                                      Row(children: [
-                                        IconButton(onPressed: () async => _updateDialogue(context, item.id, item), icon: const Icon(FontAwesomeIcons.pencil, color: AppColors.blue, size: 18), tooltip: "Editer"),
-                                      ],)),
-
-                                ])
-                            ).toList(),
-                          )
-                      ),
-                    )
-                )
-            ),
+                        decoration: const BoxDecoration(color: AppColors.white),
+                        columns: const [
+                          DataColumn(
+                              label: SecondaryText(
+                                  text: "Nom",
+                                  color: AppColors.blue,
+                                  fontWeight: FontWeight.w600),
+                              tooltip: "Name of product"),
+                          DataColumn(
+                              label: SecondaryText(
+                                  text: "Prix unitaire",
+                                  color: AppColors.blue,
+                                  fontWeight: FontWeight.w600),
+                              tooltip: "price of product"),
+                          DataColumn(
+                              label: SecondaryText(
+                                  text: "Quantité",
+                                  color: AppColors.blue,
+                                  fontWeight: FontWeight.w600),
+                              tooltip: "Number of product"),
+                          DataColumn(
+                              label: SecondaryText(
+                                  text: "Date péremption",
+                                  color: AppColors.blue,
+                                  fontWeight: FontWeight.w600),
+                              tooltip: "Peremption date"),
+                          DataColumn(
+                              label: SecondaryText(
+                                  text: "Actions",
+                                  color: AppColors.blue,
+                                  fontWeight: FontWeight.w600),
+                              tooltip: "Actions"),
+                        ],
+                        rows: items
+                            .map((item) => DataRow(cells: [
+                                  DataCell(SecondaryText(
+                                      text: item.nom, color: AppColors.blue)),
+                                  DataCell(SecondaryText(
+                                      text: item.pu.toString(),
+                                      color: AppColors.blue)),
+                                  DataCell(SecondaryText(
+                                      text: item.qte.toString(),
+                                      color: AppColors.blue)),
+                                  DataCell(SecondaryText(
+                                      text: item.dateExp,
+                                      color: AppColors.blue)),
+                                  DataCell(Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () async =>
+                                              _updateDialogue(
+                                                  context, item.id, item),
+                                          icon: const Icon(
+                                              FontAwesomeIcons.pencil,
+                                              color: AppColors.blue,
+                                              size: 18),
+                                          tooltip: "Editer"),
+                                    ],
+                                  )),
+                                ]))
+                            .toList(),
+                      )),
+                    ))),
           ],
         ),
       ),
@@ -162,12 +194,10 @@ class _ProduitScreenState extends State<ProduitScreen> {
           FloatingActionButton(
               backgroundColor: AppColors.blue,
               onPressed: () {
-                setState(() {
-
-                });
+                setState(() {});
               },
-              child: const Icon(FontAwesomeIcons.refresh, color: AppColors.white, size: 18)),
-
+              child: const Icon(FontAwesomeIcons.refresh,
+                  color: AppColors.white, size: 18)),
           const SizedBox(width: 5),
           FloatingActionButton.extended(
             backgroundColor: AppColors.blue,
@@ -185,10 +215,8 @@ class _ProduitScreenState extends State<ProduitScreen> {
     );
   }
 
-
   /// methode
   _addDialogue(BuildContext context) {
-
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -199,85 +227,112 @@ class _ProduitScreenState extends State<ProduitScreen> {
             width: 400,
             child: SingleChildScrollView(
               child: Form(
-                key: _formKey,
+                key: _dialogKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un nom";
+                          }
+                          return null;
+                        },
                         hintText: AppLocalizations.of(context)!.nom,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         icon: Icons.vaccines,
                         keyboardType: TextInputType.text,
                         controller: nomController),
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un prix";
+                          }
+                          return null;
+                        },
                         hintText: AppLocalizations.of(context)!.prix,
                         icon: Icons.price_change,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.number,
                         controller: puController),
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer une quantité";
+                          }
+                          return null;
+                        },
                         hintText: AppLocalizations.of(context)!.qte,
                         icon: Icons.storage,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.number,
                         controller: qteController),
 
                     const SizedBox(height: 12.0),
 
                     /// date form field
-                   TextFormField(
-                     controller: dateExpController,
-                     style: GoogleFonts.inter(color: AppColors.blue),
-                     cursorColor: AppColors.blue,
-                     keyboardType: TextInputType.datetime,
-                     readOnly: true,
-                     onTap: () async {
+                    TextFormField(
+                        controller: dateExpController,
+                        style: GoogleFonts.inter(color: AppColors.blue),
+                        cursorColor: AppColors.blue,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.datetime,
+                        readOnly: true,
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              keyboardType: TextInputType.datetime,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(DateTime.now().year),
+                              lastDate: DateTime(3000));
 
-                       DateTime? pickedDate = await showDatePicker(
-                           context: context,
-                           keyboardType: TextInputType.datetime,
-                           initialDate: DateTime.now(),
-                           firstDate: DateTime(DateTime.now().year),
-                           lastDate: DateTime(3000));
-
-                       /// check if date isn't null
-                       if (pickedDate != null) {
-                         setState(() {
-                           dateExpController.text = CustomDate.custom(pickedDate);
-                         });
-                       }
-                     },
-
-                     decoration: InputDecoration(
-                       filled: true,
-                       fillColor: AppColors.white,
-                       prefixIcon: const Icon(Icons.date_range, color: AppColors.blue),
-                       border: OutlineInputBorder(
-                           borderRadius: BorderRadius.circular(16.0),
-                           borderSide: BorderSide.none),
-                       hintText: AppLocalizations.of(context)!.date,
-                       hintStyle: GoogleFonts.inter(color: AppColors.grey))),
+                          /// check if date isn't null
+                          if (pickedDate != null) {
+                            setState(() {
+                              dateExpController.text =
+                                  CustomDate.custom(pickedDate);
+                            });
+                          }
+                        },
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: AppColors.white,
+                            prefixIcon: const Icon(Icons.date_range,
+                                color: AppColors.blue),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                                borderSide: BorderSide.none),
+                            hintText: AppLocalizations.of(context)!.date,
+                            hintStyle:
+                                GoogleFonts.inter(color: AppColors.grey))),
 
                     const SizedBox(height: 16.0),
                     FloatingActionButton.extended(
                       onPressed: () async {
-                        ProduitModel data = ProduitModel(
-                            id: 0,
-                            nom: nomController.text.trim(),
-                            pu: int.parse(puController.text),
-                            qte: int.parse(qteController.text),
-                            dateExp: dateExpController.text.toString());
+                        if (_dialogKey.currentState!.validate()) {
+                          ProduitModel data = ProduitModel(
+                              id: 0,
+                              nom: nomController.text.trim(),
+                              pu: int.parse(puController.text),
+                              qte: int.parse(qteController.text),
+                              dateExp: dateExpController.text.toString());
 
-                        ProduitRepository().save(produitModel: data);
-                        _clearInput();
-                        Navigator.of(context).pop();
-                        _infoDialogue(AppLocalizations.of(context)!.ajouter_produit);
+                          ProduitRepository().save(produitModel: data);
+                          _clearInput();
+                          Navigator.of(context).pop();
+                          _infoDialogue(
+                              AppLocalizations.of(context)!.ajouter_produit);
+                        } else {
 
+                        }
                       },
                       backgroundColor: AppColors.blue,
-                      label: SecondaryText(text: AppLocalizations.of(context)!.enregistrer),
+                      label: SecondaryText(
+                          text: AppLocalizations.of(context)!.enregistrer),
                     ),
                   ],
                 ),
@@ -289,26 +344,45 @@ class _ProduitScreenState extends State<ProduitScreen> {
     );
   }
 
+  /// banner
+  _banner(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        elevation: 5,
+        backgroundColor: AppColors.blue,
+        dismissDirection: DismissDirection.horizontal,
+        content: ListTile(
+          dense: true,
+          title: SecondaryText(text: text),
+          trailing: IconButton(
+            onPressed: () =>
+                ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   /// methode
   _infoDialogue(String msg) {
-
     return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: AppColors.background,
-          title: HeaderDialog(title: AppLocalizations.of(context)!.informations),
-          content: SecondaryText(
-              text: msg,
-              color: AppColors.blue),
+          title:
+              HeaderDialog(title: AppLocalizations.of(context)!.informations),
+          content: SecondaryText(text: msg, color: AppColors.blue),
           actions: [
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                setState(() {
-
-                });
+                setState(() {});
               },
               child: SecondaryText(
                   text: AppLocalizations.of(context)!.d_accord,
@@ -322,7 +396,6 @@ class _ProduitScreenState extends State<ProduitScreen> {
 
   /// methode
   _updateDialogue(BuildContext context, int id, ProduitModel produitModel) {
-
     /// initialize our controllers with retrieved data
     nomController.text = produitModel.nom;
     puController.text = produitModel.pu.toString();
@@ -343,8 +416,13 @@ class _ProduitScreenState extends State<ProduitScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un nom";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.nom,
                         icon: Icons.vaccines,
                         keyboardType: TextInputType.text,
@@ -352,6 +430,12 @@ class _ProduitScreenState extends State<ProduitScreen> {
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer un prix";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.prix,
                         icon: Icons.price_change,
                         keyboardType: TextInputType.number,
@@ -359,6 +443,12 @@ class _ProduitScreenState extends State<ProduitScreen> {
 
                     const SizedBox(height: 12.0),
                     CostumFormField(
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return "Entrer une quantité";
+                          }
+                          return "";
+                        },
                         hintText: AppLocalizations.of(context)!.qte,
                         icon: Icons.storage,
                         keyboardType: TextInputType.number,
@@ -374,7 +464,6 @@ class _ProduitScreenState extends State<ProduitScreen> {
                         keyboardType: TextInputType.datetime,
                         readOnly: true,
                         onTap: () async {
-
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               keyboardType: TextInputType.datetime,
@@ -385,21 +474,22 @@ class _ProduitScreenState extends State<ProduitScreen> {
                           /// check if date isn't null
                           if (pickedDate != null) {
                             setState(() {
-                              dateExpController.text = DateFormat("dd-MM-yyyy")
-                                  .format(pickedDate);
+                              dateExpController.text =
+                                  DateFormat("dd-MM-yyyy").format(pickedDate);
                             });
                           }
                         },
-
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: AppColors.white,
-                            prefixIcon: const Icon(Icons.date_range, color: AppColors.blue),
+                            prefixIcon: const Icon(Icons.date_range,
+                                color: AppColors.blue),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16.0),
                                 borderSide: BorderSide.none),
                             hintText: AppLocalizations.of(context)!.date,
-                            hintStyle: GoogleFonts.inter(color: AppColors.grey))),
+                            hintStyle:
+                                GoogleFonts.inter(color: AppColors.grey))),
 
                     const SizedBox(height: 16.0),
                     FloatingActionButton.extended(
@@ -415,11 +505,12 @@ class _ProduitScreenState extends State<ProduitScreen> {
                         _clearInput();
                         fetchData();
                         Navigator.of(context).pop();
-                        _infoDialogue(AppLocalizations.of(context)!.modifier_produit);
-
+                        _infoDialogue(
+                            AppLocalizations.of(context)!.modifier_produit);
                       },
                       backgroundColor: AppColors.blue,
-                      label: SecondaryText(text: AppLocalizations.of(context)!.modifier),
+                      label: SecondaryText(
+                          text: AppLocalizations.of(context)!.modifier),
                     ),
                   ],
                 ),
@@ -433,7 +524,6 @@ class _ProduitScreenState extends State<ProduitScreen> {
 
   /// methode
   _deleteDialogue(BuildContext context, int id, String nom) {
-
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -443,19 +533,21 @@ class _ProduitScreenState extends State<ProduitScreen> {
           content: SecondaryText(
               text: "${AppLocalizations.of(context)!.confirmation_p} $nom",
               color: AppColors.blue),
-
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: SecondaryText(text: AppLocalizations.of(context)!.annuler, color: AppColors.blue),
+              child: SecondaryText(
+                  text: AppLocalizations.of(context)!.annuler,
+                  color: AppColors.blue),
             ),
             TextButton(
                 onPressed: () async {
                   ProduitRepository().delete(id: id);
                   Navigator.of(context).pop();
-                  _infoDialogue(AppLocalizations.of(context)!.supprimer_produit);
+                  _infoDialogue(
+                      AppLocalizations.of(context)!.supprimer_produit);
                 },
                 child: SecondaryText(
                     text: AppLocalizations.of(context)!.supprimer,
@@ -468,7 +560,6 @@ class _ProduitScreenState extends State<ProduitScreen> {
 
   /// methode
 
-
   /// clear methode
   _clearInput() {
     nomController.clear();
@@ -477,4 +568,3 @@ class _ProduitScreenState extends State<ProduitScreen> {
     dateExpController.clear();
   }
 }
-

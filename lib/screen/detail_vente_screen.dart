@@ -361,7 +361,7 @@ class _DetailVenteScreenState extends State<DetailVenteScreen> {
                       hintText: '',
                       icon: Icons.vaccines,
                       keyboardType: TextInputType.text,
-                      controller: nomController,
+                      controller: nomController, validator: (String? value) {  },
                     ),
                     const SizedBox(height: 16.0),
                     FormFieldNumber(
